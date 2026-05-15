@@ -1,0 +1,137 @@
+class Solution {
+    void selectionSort(int[] arr) {
+        // code here
+        for(int i=0;i<arr.length-1;i++){
+            int minindex=i;
+            for(int j=i+1;j<arr.length;j++){//find min index and swap with i th index
+                if(arr[j]<arr[minindex]){
+                    minindex=j;
+                }
+            }
+            int temp=arr[i];
+            arr[i]=arr[minindex];
+            arr[minindex]=temp;
+        }
+    }
+}
+
+
+
+class Solution {
+    public void bubbleSort(int[] arr) {
+        // code here
+        for(int i=0;i<arr.length;i++){
+            for(int j=0;j<arr.length-i-1;j++){//i  large elements are end of array in sorted order
+                if(arr[j]>arr[j+1]){
+                    int temp=arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=temp;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+class Solution {
+    // Please change the array in-place
+    public void insertionSort(int arr[]) {
+        // code here
+        for(int i=0;i<arr.length;i++){
+            int key=arr[i];
+            int j=i-1;
+            while(j>=0 && key<arr[j]){//upto ith index array is sorted
+                arr[j+1]=arr[j];
+                j--;
+            }
+            arr[j+1]=key;
+        }
+    }
+}
+
+
+
+
+class Solution {
+    public int[] merge(int l,int m,int e,int []nums){
+        int arr[]=new int[e-l+1];
+        int k=0;
+        int i=l;
+        int j=m+1;
+        while(i<=m && j<=e){
+            if(nums[i]<nums[j]){
+                arr[k++]=nums[i++];
+            }
+            else{
+                arr[k++]=nums[j++];
+            }
+        }
+        while(i<=m){
+            arr[k++]=nums[i++];
+        }
+        while(j<=e){
+             arr[k++]=nums[j++];
+        }
+        for( i=0;i<k;i++){
+            nums[l+i]=arr[i];
+        }
+        return nums;
+    }
+    public int[] mergesort(int l,int r,int[] nums){
+        if(l<r){
+            int m=(l+r)/2;
+            mergesort(l,m,nums);
+            mergesort(m+1,r,nums);
+            merge(l,m,r,nums);
+        }
+        return nums;
+    }
+    public int[] sortArray(int[] nums) {
+        return mergesort(0, nums.length-1,nums);
+    }
+}
+
+
+
+
+class Solution {
+    Random rand = new Random();
+    public void quickSort(int l,int r,int []nums){
+        if(l<r){
+            int pivotIndex = l + rand.nextInt(r - l + 1);
+            int temp=nums[pivotIndex];
+            nums[pivotIndex]=nums[l];
+            nums[l]=temp;
+	    int pivot=nums[l];
+            int s=l+1;
+            int e=r;
+            while(s<=e){
+                while(s<=r && nums[s]<=pivot){
+                    s++;
+                }
+                while(e>=l && nums[e]>pivot){
+                    e--;
+                }
+                if(s<e){
+                    temp=nums[s];
+                    nums[s]=nums[e];
+                    nums[e]=temp;
+                }
+            }
+            temp=nums[l];
+            nums[l]=nums[e];
+            nums[e]=temp;
+            quickSort(l,e-1,nums);
+            quickSort(e+1,r,nums);
+        }
+    }
+    public int[] sortArray(int[] nums) {
+        quickSort(0,nums.length-1,nums);
+        return nums;
+    }
+}
+
+
+

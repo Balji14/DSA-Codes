@@ -1,0 +1,86 @@
+JAVA ARRAYLIST METHODS (MOST IMPORTANT)
+
+import java.util.*;
+
+1. add()
+Adds element to list
+Example:
+ArrayList<Integer> list = new ArrayList<>();
+list.add(10); → [10]
+
+2. addAll()
+Adds multiple elements
+Example:
+list.addAll(Arrays.asList(20,30)) → [10,20,30]
+
+3. get()
+Returns element at index
+Example:
+list.get(1) → 20
+
+4. set()
+Replaces element at index
+Example:
+list.set(1, 99) → [10,99,30]
+
+5. remove()
+Removes element (by index or value)
+Example:
+list.remove(1) → [10,30]
+list.remove(Integer.valueOf(10)) → [30]
+
+6. size()
+Returns number of elements
+Example:
+list.size() → 1
+
+7. isEmpty()
+Checks if list is empty
+Example:
+list.isEmpty() → false
+
+8. contains()
+Checks if element exists
+Example:
+list.contains(30) → true
+
+9. indexOf()
+Returns first occurrence index
+Example:
+list.indexOf(30) → 0
+
+10. lastIndexOf()
+Returns last occurrence index
+Example:
+list.lastIndexOf(30) → 0
+
+11. clear()
+Removes all elements
+Example:
+list.clear() → []
+
+12. sort()
+Sorts list in ascending order
+Example:
+list.addAll(Arrays.asList(5,1,3));
+Collections.sort(list) → [1,3,5]
+
+13. forEach()
+Loops through elements
+Example:
+list.forEach(n -> System.out.print(n + " "))
+
+14. removeIf()
+Removes elements based on condition
+Example:
+list.removeIf(n -> n > 10)
+
+15. subList()
+Returns part of list
+Example:
+list.subList(0,2)
+
+16. toArray()
+Converts list to array
+Example:
+Object[] arr = list.toArray()

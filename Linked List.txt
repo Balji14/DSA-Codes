@@ -1,0 +1,1315 @@
+Insertion at a Given Position in a Linked List
+
+You are given the head of a Singly Linked List, a position pos and value val. Insert the val data at the given position (1-based index) of the LinkedList and return the head of the modified Linked List.
+
+Examples:
+
+Input: pos = 3, val = 4,
+    
+Output: 1 -> 3 -> 4
+Explanation: After inserting 4 at position 3 we'll get our linked list as - 
+    
+Input: pos = 2, val = 5,
+    
+Output: 1 -> 5 -> 2 -> 9
+Explanation: After inserting 5 at position 2 we'll get our linked list as -
+    
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int x) {
+        data = x;
+        next = null;
+    }
+}
+*/
+class Solution {
+    public Node insertPos(Node head, int pos, int val) {
+        // code here
+        if(pos==1){
+            Node temp=new Node(val);
+            temp.next=head;
+            head=temp;
+            return head;
+        }
+        int count=1;
+        Node temp=head;
+        while(temp.next!=null && count<pos-1){
+            count++;
+            temp=temp.next;
+        }
+        Node temp1=new Node(val);
+        temp1.next=temp.next;
+        temp.next=temp1;
+        return head;
+    }
+}
+
+
+
+
+
+237. Delete Node in a Linked List
+
+There is a singly-linked list head and we want to delete a node node in it.
+
+You are given the node to be deleted node. You will not be given access to the first node of head.
+
+All the values of the linked list are unique, and it is guaranteed that the given node node is not the last node in the linked list.
+
+Delete the given node. Note that by deleting the node, we do not mean removing it from memory. We mean:
+
+The value of the given node should not exist in the linked list.
+The number of nodes in the linked list should decrease by one.
+All the values before node should be in the same order.
+All the values after node should be in the same order.
+Custom testing:
+
+For the input, you should provide the entire linked list head and the node to be given node. node should not be the last node of the list and should be an actual node in the list.
+We will build the linked list and pass the node to your function.
+The output will be the entire list after calling your function.
+ 
+
+Example 1:
+
+
+Input: head = [4,5,1,9], node = 5
+Output: [4,1,9]
+Explanation: You are given the second node with value 5, the linked list should become 4 -> 1 -> 9 after calling your function.
+Example 2:
+
+
+Input: head = [4,5,1,9], node = 1
+Output: [4,5,9]
+Explanation: You are given the third node with value 1, the linked list should become 4 -> 5 -> 9 after calling your function.
+class Solution {
+    public void deleteNode(ListNode node) {
+       node.val=node.next.val;
+       node.next=node.next.next;
+    }
+}
+
+
+
+Find Length of Linked List
+
+Given head of a singly linked list. The task is to find the length of the linked list, where length is defined as the number of nodes in the linked list.
+
+Examples :
+
+Input: head : 1->2->3->4->5
+
+Output: 5
+Explanation: Length of the linked list is 5, as there 
+are 5 nodes present in it.
+Input: head : 2->4->6->7->5->1->0
+ 
+Output: 7
+Explanation: Length of the linked list is 7, as there 
+are 7 nodes present in it.
+
+/*
+class Node{
+    int data;
+    Node next;
+    Node(int a){  data = a; next = null; }
+}*/
+
+class Solution {
+    public int getCount(Node head) {
+        // code here
+        Node temp=head;
+        int ans=0;
+        while(temp!=null){
+            ans++;
+            temp=temp.next;
+        }
+        return ans;
+    }
+}
+
+
+
+Insertion at doubly linked list
+
+Given the head of a doubly-linked list, a position p, and an integer x. Add a new node with value x at the position just after pth node in the doubly linked list and return the head of the updated list.
+
+Note: The position is 0-based indexed.
+
+Examples:
+
+Input: p = 2, x = 6
+
+Output: 2 <-> 4 <-> 5 <-> 6
+Explanation: Insert a node of value 6 after the 2nd node.
+
+Input: p = 0, x = 44 
+
+Output: 1 <-> 44 <-> 2 <-> 3 <-> 4
+Explanation: Insert a node of value 44 after the 0th node.
+
+
+/*
+class Node
+{
+    int data;
+    Node next;
+    Node prev;
+    Node(int data)
+    {
+        this.data = data;
+        next = prev = null;
+    }
+}
+*/
+
+class Solution {
+    Node insertAtPos(Node head, int p, int x) {
+        // code here
+        int i=0;
+        Node temp=head;
+        while(i<p && temp.next!=null){
+            temp=temp.next;
+            i++;
+        }
+        Node newNode=new Node(x);
+        if(i==p && temp.next==null){
+            temp.next=newNode;
+            newNode.prev=temp;
+            return head; 
+        }
+        if(temp.next!=null){
+            temp.next.prev=newNode;
+            newNode.next=temp.next;
+            temp.next=newNode;
+            newNode.prev=temp;
+            
+        }
+        return head;
+    }
+}
+
+
+
+
+
+Delete in a Doubly Linked List
+You are given a Doubly Linked List and an integer x. Remove the node at position x (positions are 1-indexed) from the list, and return the head of the updated list.
+
+Examples:
+
+Input: x = 3,
+   
+Output: 1 <-> 3
+Explanation: After deleting the node at position 3 (position starts from 1), the updated linked list is 1 <-> 3.
+   
+Input: x = 1,
+   
+Output: 5 <-> 2 <-> 9
+Explanation: After deleting the node at position 1, the updated linked list is 5 <-> 2 <-> 9.
+   
+
+
+/*
+Structure of a Doubly LinkList
+class Node {
+    int data;
+    Node next;
+    Node prev;
+
+    Node(int val) {
+        data = val;
+        next = null;
+        prev = null;
+    }
+}
+*/
+class Solution {
+    public Node delPos(Node head, int x) {
+        // code here
+        int i=1;
+        Node temp=head;
+         if(x==1){
+            head=head.next;
+            temp.next.prev=null;
+            return head;
+        }
+        while(i<x-1){
+            temp=temp.next;
+            i++;
+        }
+        temp.next=temp.next.next;
+        if(temp.next!=null){
+            temp.next.prev=temp;
+        }
+        return head;
+    }
+}
+
+
+
+
+
+
+
+
+
+876. Middle of the Linked List
+
+Given the head of a singly linked list, return the middle node of the linked list.
+
+If there are two middle nodes, return the second middle node.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [3,4,5]
+Explanation: The middle node of the list is node 3.
+Example 2:
+
+
+Input: head = [1,2,3,4,5,6]
+Output: [4,5,6]
+Explanation: Since the list has two middle nodes with values 3 and 4, we return the second one.
+
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode one=head;
+        ListNode two=head.next;
+        ListNode ans=null;
+        while(true){
+            one=one.next;
+            if(two.next==null){
+                ans=one;
+                break;
+            }
+            else{
+                if(two.next.next==null){
+                    ans=one;
+                    break;
+                }
+                else{
+                    two=two.next.next;
+                }
+            }
+        }
+        return ans;
+    }
+} 
+        
+
+
+
+
+
+206. Reverse Linked List
+
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+Example 2:
+
+
+Input: head = [1,2]
+Output: [2,1]
+Example 3:
+
+Input: head = []
+Output: []
+
+
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode next = curr.next; // store next
+            curr.next = prev;          // reverse link
+            prev = curr;               // move prev
+            curr = next;               // move curr
+        }
+        return prev;
+    }
+}
+
+
+
+
+206. Reverse Linked List
+
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+Example 2:
+
+
+Input: head = [1,2]
+Output: [2,1]
+Example 3:
+
+Input: head = []
+Output: []
+ 
+
+// class Solution {
+//     public ListNode reverseList(ListNode head) {
+//         ListNode prev = null;
+//         ListNode curr = head;
+
+//         while (curr != null) {
+//             ListNode next = curr.next; // store next
+//             curr.next = prev;          // reverse link
+//             prev = curr;               // move prev
+//             curr = next;               // move curr
+//         }
+//         return prev;
+//     }
+// }
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+       ListNode newHead=reverseList(head.next);
+       ListNode front=head.next;
+       front.next=head;
+       head.next=null;
+        return newHead;
+    }
+}
+
+
+
+
+
+
+
+141. Linked List Cycle
+
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
+
+ 
+
+Example 1:
+
+
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+Example 2:
+
+
+Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
+ 
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        if (head.next == head) {
+            return true;
+        }
+        int f = 0;
+        ListNode one = head;
+        ListNode two = head.next;
+        while (two != null) {
+            if (one == two) {
+                f = 1;
+                break;
+            }
+            one = one.next;
+            if (two.next != null) {
+                if (two.next.next != null) {
+                    two = two.next.next;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        if (f == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+/**public class Solution {
+    public boolean hasCycle(ListNode head) {
+
+        if(head == null)return false;
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+         while(slow.next!=null && fast.next!=null &&  fast.next.next!=null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if(slow == fast)
+            return true; 
+        }
+
+        return false;
+
+        
+    }
+} */
+
+
+
+
+
+
+
+
+
+142. Linked List Cycle II
+Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+
+Do not modify the linked list.
+
+ 
+
+Example 1:
+
+
+Input: head = [3,2,0,-4], pos = 1
+Output: tail connects to node index 1
+Explanation: There is a cycle in the linked list, where tail connects to the second node.
+Example 2:
+
+
+Input: head = [1,2], pos = 0
+Output: tail connects to node index 0
+Explanation: There is a cycle in the linked list, where tail connects to the first node.
+Example 3:
+
+
+Input: head = [1], pos = -1
+Output: no cycle
+Explanation: There is no cycle in the linked list.
+ 
+
+Constraints:
+
+The number of the nodes in the list is in the range [0, 104].
+-105 <= Node.val <= 105
+pos is -1 or a valid index in the linked-list.
+
+
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if(head==null || head.next==null){
+            return null;
+        }
+        ListNode one=head;
+        ListNode two=one;
+        while(two!=null && two.next!=null){
+            one=one.next;
+            two=two.next.next;
+            if(one==two){
+                break;
+            }
+        }
+        if(two==null || two.next==null){
+            return null;
+        }
+        ListNode ans=head;
+        while(ans!=one){
+            ans=ans.next;
+            one=one.next;
+        }
+        return ans;
+    }
+}
+
+Find length of Loop
+Given the head of a linked list, determine whether the list contains a loop. If a loop is present, return the number of nodes in the loop, otherwise return 0.
+
+Note: Internally, pos(1 based index) is used to denote the position of the node that tail's next pointer is connected to. If pos = 0, it means the last node points to null, indicating there is no loop. Note that pos is not passed as a parameter.
+
+Examples:
+
+Input: pos = 2,
+   
+Output: 4
+Explanation: There exists a loop in the linked list and the length of the loop is 4.
+Input: pos = 3,
+   
+Output: 3
+Explanation: The loop is from 19 to 10. So length of loop is 19 → 33 → 10 = 3.
+Input: pos = 0,
+    
+Output: 0
+Explanation: There is no loop.
+
+
+class Solution {
+    public int lengthOfLoop(Node head) {
+        if (head == null) return 0;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                int count = 1;
+                Node temp = slow.next;
+                while (temp != slow) {
+                    count++;
+                    temp = temp.next;
+                }
+                return count;
+            }
+        }
+
+        return 0; 
+    }
+}
+
+
+
+
+
+
+234. Palindrome Linked List
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,2,1]
+Output: true
+Example 2:
+
+
+Input: head = [1,2]
+Output: false
+class Solution {
+  public boolean isPalindrome(ListNode head) {
+    ListNode slow = head;
+    ListNode fast = head;
+
+    while (fast != null && fast.next != null) {
+      slow = slow.next;
+      fast = fast.next.next;
+    }
+
+    if (fast != null)
+      slow = slow.next;
+    slow = reverseList(slow);
+
+    while (slow != null) {
+      if (slow.val != head.val)
+        return false;
+      slow = slow.next;
+      head = head.next;
+    }
+
+    return true;
+  }
+
+  private ListNode reverseList(ListNode head) {
+    ListNode prev = null;
+    while (head != null) {
+      ListNode next = head.next;
+      head.next = prev;
+      prev = head;
+      head = next;
+    }
+    return prev;
+  }
+}
+ 
+
+
+
+
+328. Odd Even Linked List
+Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.
+
+The first node is considered odd, and the second node is even, and so on.
+
+Note that the relative order inside both the even and odd groups should remain as it was in the input.
+
+You must solve the problem in O(1) extra space complexity and O(n) time complexity.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5]
+Output: [1,3,5,2,4]
+Example 2:
+
+
+Input: head = [2,1,3,5,6,4,7]
+Output: [2,3,6,7,1,5,4]
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode odd=head;
+        ListNode even=head.next;
+        ListNode evenNode=even;
+        while(even!=null && even.next!=null){
+            odd.next=even.next;
+            odd=odd.next;
+            even.next=odd.next;
+            even=even.next;
+        }
+        odd.next=evenNode;
+        return head;
+    }
+}
+
+
+
+
+
+19. Remove Nth Node From End of List
+
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
+Example 2:
+
+Input: head = [1], n = 1
+Output: []
+Example 3:
+
+Input: head = [1,2], n = 1
+Output: [1]
+
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        if (head == null || n == 0) return head;
+
+        ListNode temp = null, cur = head;
+        int k = 0;
+
+        while (cur != null) {
+            cur = cur.next;
+            k++;
+
+            if (k == n + 1) temp = head;
+            else if (k > n + 1) temp = temp.next;
+        }
+
+        if (k == n) return head.next;
+
+        if (temp != null && temp.next != null)
+            temp.next = temp.next.next;
+
+        return head;
+    }
+}\
+
+
+
+
+
+
+
+
+2095. Delete the Middle Node of a Linked List
+
+You are given the head of a linked list. Delete the middle node, and return the head of the modified linked list.
+
+The middle node of a linked list of size n is the ⌊n / 2⌋th node from the start using 0-based indexing, where ⌊x⌋ denotes the largest integer less than or equal to x.
+
+For n = 1, 2, 3, 4, and 5, the middle nodes are 0, 1, 1, 2, and 2, respectively.
+ 
+
+Example 1:
+
+
+Input: head = [1,3,4,7,1,2,6]
+Output: [1,3,4,1,2,6]
+Explanation:
+The above figure represents the given linked list. The indices of the nodes are written below.
+Since n = 7, node 3 with value 7 is the middle node, which is marked in red.
+We return the new list after removing this node. 
+Example 2:
+
+
+Input: head = [1,2,3,4]
+Output: [1,2,4]
+Explanation:
+The above figure represents the given linked list.
+For n = 4, node 2 with value 3 is the middle node, which is marked in red.
+Example 3:
+
+
+Input: head = [2,1]
+Output: [2]
+Explanation:
+The above figure represents the given linked list.
+For n = 2, node 1 with value 1 is the middle node, which is marked in red.
+Node 0 with value 2 is the only node remaining after removing node 1.
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [1, 105].
+1 <= Node.val <= 10^5
+
+
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        if(head==null || head.next==null){
+            return null;
+        }
+        ListNode one=head;
+        ListNode two=head;
+        ListNode pre=null;
+        while(two!=null && two.next!=null){
+            pre=one;
+            one=one.next;
+            two=two.next.next;
+        }
+        pre.next=one.next;
+         return head;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+148. Sort List
+Given the head of a linked list, return the list after sorting it in ascending order.
+
+ 
+
+Example 1:
+
+
+Input: head = [4,2,1,3]
+Output: [1,2,3,4]
+Example 2:
+
+
+Input: head = [-1,5,3,4,0]
+Output: [-1,0,3,4,5]
+Example 3:
+
+Input: head = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the list is in the range [0, 5 * 104].
+-105 <= Node.val <= 105
+ 
+
+class Solution {
+    public ListNode getmid(ListNode head){
+        ListNode one=head;
+        ListNode two=head.next;
+        while(two!=null && two.next!=null){
+            one=one.next;
+            two=two.next.next;
+        }
+        return one;
+    } 
+    public ListNode merge(ListNode l1,ListNode l2){
+        ListNode dummy=new ListNode(-1);
+        ListNode curr=dummy;
+        while(l1!=null && l2!=null){
+            if(l1.val<l2.val){
+                curr.next=l1;
+                curr=curr.next;
+                l1=l1.next;
+            }
+            else{
+                curr.next=l2;
+                curr=curr.next;
+                l2=l2.next;
+            }
+        }
+        while(l1!=null){
+            curr.next=l1;
+            curr=curr.next;
+            l1=l1.next;
+        }
+         while(l2!=null){
+            curr.next=l2;
+            curr=curr.next;
+            l2=l2.next;
+        }
+        return dummy.next;
+    }
+    public ListNode mergesort(ListNode head){
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode mid=getmid(head);
+        ListNode midnext=mid.next;
+        mid.next=null;
+        ListNode left=mergesort(head);
+        ListNode right=mergesort(midnext);
+        return merge(left,right);
+    }
+    public ListNode sortList(ListNode head) {
+        return mergesort(head);
+    }
+}
+
+
+
+
+
+
+
+
+Sort a linked list of 0s, 1s and 2s
+Given the head of a linked list where nodes can contain values 0s, 1s, and 2s only. Your task is to rearrange the list so that all 0s appear at the beginning, followed by all 1s, and all 2s are placed at the end.
+
+Examples:
+
+Input: head = 1 → 2 → 2 → 1 → 2 → 0 → 2 → 2
+   
+Output: 0 → 1 → 1 → 2 → 2 → 2 → 2 → 2
+Explanation: All the 0s are segregated to the left end of the linked list, 2s to the right end of the list, and 1s in between. The final list will be:
+   
+Input: head = 2 → 2 → 0 → 1
+   
+Output: 0 → 1 → 2 → 2
+Explanation: After arranging all the 0s, 1s and 2s in the given format, the output will be:
+
+
+class Solution {
+    public Node segregate(Node head) {
+        // code here
+        int one=0,two=0,zero=0;
+        Node temp=head;
+        while(temp!=null){
+            if(temp.data==0)    zero++;
+            else if(temp.data==1)   one++;
+            else two++;
+            temp=temp.next;
+        }
+        head=new Node(0);
+        temp=head;
+        while(zero>0){
+            Node cur=new Node(0);
+            temp.next=cur;
+            temp=temp.next;
+            zero--;
+        }
+        while(one>0){
+            Node cur=new Node(1);
+            temp.next=cur;            
+            temp=temp.next;
+            one--;
+        }
+        while(two>0){
+            Node cur=new Node(2);
+            temp.next=cur; 
+            temp=temp.next;
+            two--;
+        }
+        return head.next;
+    }
+}
+   
+
+
+
+25. Reverse Nodes in k-Group
+
+Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+
+k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+
+You may not alter the values in the list's nodes, only nodes themselves may be changed.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [2,1,4,3,5]
+Example 2:
+
+
+Input: head = [1,2,3,4,5], k = 3
+Output: [3,2,1,4,5]
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    ListNode reverse(ListNode head, int k) {
+        ListNode temp = head;
+        ListNode forward = null;
+        ListNode curr = null;
+        int a = 0;
+
+        while (temp != null && a < k) {
+            forward = temp.next;
+            temp.next = curr;
+            curr = temp;
+            temp = forward;
+            a++;
+        }
+        return curr; 
+    }
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || head.next == null || k == 1) {
+            return head;
+        }
+
+        ListNode temp = head;
+        int a = 0;
+        while (temp != null) {
+            a++;
+            temp = temp.next;
+        }
+
+        ListNode mainhead = new ListNode(-1); 
+        ListNode pre = mainhead;
+        temp = head;
+
+        while (a >= k) { 
+            ListNode ghead = head;
+            ListNode nextGroupHead = head; 
+
+            for (int i = 0; i < k && nextGroupHead != null; i++) {
+                nextGroupHead = nextGroupHead.next;
+            }
+
+            ListNode temphead = reverse(ghead, k);
+
+            if (mainhead.next == null) {
+                mainhead.next = temphead;
+            } else {
+                pre.next = temphead; 
+            }
+
+            pre = ghead; 
+            head = nextGroupHead; 
+            a -= k;
+        }
+
+        pre.next = head;
+
+        return mainhead.next;
+    }
+}
+
+
+
+61. Rotate List
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Given the head of a linked list, rotate the list to the right by k places.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+Example 2:
+
+
+Input: head = [0,1,2], k = 4
+Output: [2,0,1]
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head==null || head.next==null || k==0){
+            return head;
+        }
+        ListNode temp=head;
+        int l=1;
+        while(temp.next!=null){
+            l++;
+            temp=temp.next;
+        }
+        temp.next=head;
+        k=k%l;
+        int ntail=l-k;
+        ListNode tail=temp;
+        for(int i=0;i<ntail;i++){
+            tail=tail.next;
+        }
+        ListNode newhead=tail.next;
+        tail.next=null;
+        return newhead;
+        
+    }
+}
+
+
+
+
+
+
+Flattening a Linked List
+Difficulty: MediumAccuracy: 51.53%Submissions: 211K+Points: 4Average Time: 40m
+Given a linked list containing n head nodes where every node in the linked list contains two pointers:
+(i) next points to the next node in the list.
+(ii) bottom points to a sub-linked list where the current node is the head.
+Each of the sub-linked lists nodes and the head nodes are sorted in ascending order based on their data. Flatten the linked list such that all the nodes appear in a single level while maintaining the sorted order.
+
+Note:
+1. ↓ represents the bottom pointer and → represents the next pointer.
+2. The flattened list will be printed using the bottom pointer instead of the next pointer.
+
+Examples:
+
+Input:
+
+Output: 5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.
+Explanation: 
+Bottom pointer of 5 is pointing to 7.
+Bottom pointer of 7 is pointing to 8.
+Bottom pointer of 10 is pointing to 20 and so on.
+So, after flattening the linked list the sorted list will be 
+5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.
+Input:
+
+Output: 5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50
+Explanation:
+Bottom pointer of 5 is pointing to 7.
+Bottom pointer of 7 is pointing to 8.
+Bottom pointer of 8 is pointing to 30 and so on.
+So, after flattening the linked list the sorted list will be 
+5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50.
+
+
+// class Node {
+//     int data;
+//     Node next;
+//     Node bottom;
+
+//     Node(int d) {
+//         data = d;
+//         next = null;
+//         bottom = null;
+//     }
+// }
+
+class Solution {
+    
+    Node flatten(Node root) {
+        if (root == null || root.next == null) {
+            return root;
+        }
+
+        root.next = flatten(root.next);
+
+        root = merge(root, root.next);
+
+        return root;
+    }
+
+    Node merge(Node a, Node b) {
+        if (a == null) return b;
+        if (b == null) return a;
+
+        Node result;
+
+        if (a.data < b.data) {
+            result = a;
+            result.bottom = merge(a.bottom, b);
+        } else {
+            result = b;
+            result.bottom = merge(a, b.bottom);
+        }
+
+        result.next = null; 
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+138. Copy List with Random Pointer
+
+A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null.
+
+Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.
+
+For example, if there are two nodes X and Y in the original list, where X.random --> Y, then for the corresponding two nodes x and y in the copied list, x.random --> y.
+
+Return the head of the copied linked list.
+
+The linked list is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
+
+val: an integer representing Node.val
+random_index: the index of the node (range from 0 to n-1) that the random pointer points to, or null if it does not point to any node.
+Your code will only be given the head of the original linked list.
+
+ 
+
+Example 1:
+
+
+Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Example 2:
+
+
+Input: head = [[1,1],[2,1]]
+Output: [[1,1],[2,1]]
+Example 3:
+
+
+
+Input: head = [[3,null],[3,0],[3,null]]
+Output: [[3,null],[3,0],[3,null]]
+ 
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node temp=head;
+        while(temp!=null){
+            Node copy=new Node(temp.val);
+            copy.next=temp.next;
+            temp.next=copy;
+            temp=copy.next;
+        }
+        temp=head;
+        while(temp!=null){
+            if(temp.random!=null){
+                temp.next.random=temp.random.next;
+            }
+            temp=temp.next.next;
+        }
+        temp=head;
+        Node dummy=new Node(-1);
+        Node dummycopy=dummy;
+        while(temp!=null){
+            dummycopy.next=temp.next;
+            dummycopy=dummycopy.next;
+            temp.next=temp.next.next;
+            temp=temp.next;
+        }
+        return dummy.next;

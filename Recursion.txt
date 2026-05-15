@@ -1,0 +1,1233 @@
+50. Pow(x, n)
+Implement pow(x, n), which calculates x raised to the power n (i.e., xn)
+Example 1:
+
+Input: x = 2.00000, n = 10
+Output: 1024.00000
+Example 2:
+
+Input: x = 2.10000, n = 3
+Output: 9.26100
+Example 3:
+
+Input: x = 2.00000, n = -2
+Output: 0.25000
+Explanation: 2-2 = 1/22 = 1/4 = 0.25
+
+class Solution {
+    public double myPow(double x, int n) {
+        double d=0;
+        if(n==0){
+            return 1;
+        }
+        if(n>0){
+             return calcu(x,n);
+        }
+        else{
+            return d=1/calcu(x,-n);
+
+        }
+    }
+    public double calcu(double x,int n){
+        if(n==0)
+            return 1;
+        double half=calcu(x,n/2);
+
+        if(n%2==0){
+            return half*half;
+        }
+        else{
+           return x*half*half;
+        }
+    }
+    
+}
+
+
+
+
+
+
+
+8. String to Integer (atoi)
+
+Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
+
+The algorithm for myAtoi(string s) is as follows:
+
+Whitespace: Ignore any leading whitespace (" ").
+Signedness: Determine the sign by checking if the next character is '-' or '+', assuming positivity if neither present.
+Conversion: Read the integer by skipping leading zeros until a non-digit character is encountered or the end of the string is reached. If no digits were read, then the result is 0.
+Rounding: If the integer is out of the 32-bit signed integer range [-231, 231 - 1], then round the integer to remain in the range. Specifically, integers less than -231 should be rounded to -231, and integers greater than 231 - 1 should be rounded to 231 - 1.
+Return the integer as the final result.
+
+class Solution {
+    public int myAtoi(String s) {
+        if(s==null || s.length()==0)    return 0;
+        int n=s.length();
+        int i=0;
+        while(i<n && s.charAt(i)==' ')  i++;
+        int k=1;
+        if(i<n && s.charAt(i)=='-'){
+            k=-1;
+            i++;
+        }
+        if(i<n && k!=-1 && s.charAt(i)=='+'){
+            i++;
+        }
+        return k*find(i,s,0,k);
+    }
+    public int find(int i,String s,int num,int k){
+        if(i>=s.length() || !Character.isDigit(s.charAt(i))) return num;
+
+        int digit=s.charAt(i)-'0';
+        if((num>Integer.MAX_VALUE/10) ||((num==Integer.MAX_VALUE/10) && digit>7)){
+                return (k==1)?Integer.MAX_VALUE:Integer.MIN_VALUE;
+        }
+        num=num*10+digit;
+        return find(i+1,s,num,k);
+    }
+}
+
+
+
+
+
+
+
+
+1922. Count Good Numbers
+
+A digit string is good if the digits (0-indexed) at even indices are even and the digits at odd indices are prime (2, 3, 5, or 7).
+
+For example, "2582" is good because the digits (2 and 8) at even positions are even and the digits (5 and 2) at odd positions are prime. However, "3245" is not good because 3 is at an even index but is not even.
+Given an integer n, return the total number of good digit strings of length n. Since the answer may be large, return it modulo 109 + 7.
+
+A digit string is a string consisting of digits 0 through 9 that may contain leading zeros.
+
+ 
+
+Example 1:
+
+Input: n = 1
+Output: 5
+Explanation: The good numbers of length 1 are "0", "2", "4", "6", "8".
+Example 2:
+
+Input: n = 4
+Output: 400
+Example 3:
+
+Input: n = 50
+Output: 564908303
+class Solution {
+    long mod = 1_000_000_007;
+
+    public int countGoodNumbers(long n) {
+        long even = (n + 1) / 2;
+        long prime = n / 2;
+
+        long res = power(5, even);
+        res = (res * power(4, prime)) % mod;
+
+        return (int) res;
+    }
+
+    public long power(long x, long n) {
+        if (n == 0) return 1;
+
+        long half = power(x, n / 2);
+        half = (half * half) % mod;
+
+        if (n % 2 == 0)
+            return half;
+        else
+            return (x * half) % mod;
+    }
+}
+
+
+
+
+Sort a stack
+Given a stack of integers st[]. Sort the stack in ascending order (smallest element at the bottom and largest at the top).
+
+Examples:
+
+Input: st[] = [1, 2, 3]
+Output: [3, 2, 1]
+Explanation: The stack is already sorted in ascending order.
+
+Input: st[] = [41, 3, 32, 2, 11]
+Output: [41, 32, 11, 3, 2]
+Explanation: After sorting, the smallest element (2) is at the bottom and the largest element (41) is at the top.
+
+class Solution {
+    public void sortStack(Stack<Integer> st) {
+        // code here
+        if(st.isEmpty())    return;
+        int top=st.pop();
+        sortStack(st);
+        insert(st,top);
+    }
+    public void insert(Stack<Integer> st,int num){
+        if(st.isEmpty() ||(!st.isEmpty() &&  st.peek()<num)){
+            st.push(num);
+            return;
+        }
+        int top=st.pop();
+        insert(st,num);
+        st.push(top);
+    }
+}
+
+
+
+
+
+
+
+
+Reverse a Stack
+You are given a stack st[]. You have to reverse the stack.
+
+Examples:
+
+Input: st[] = [1, 2, 3, 4]
+Output: [1, 2, 3, 4]
+Explanation: After reversing, the elements of stack are in opposite order.
+
+Input: st[] = [3, 2, 1]
+Output: [3, 2, 1]
+Explanation: After reversing, the elements of stack are in opposite order.
+class Solution {
+    public static void reverseStack(Stack<Integer> st) {
+        // code here
+        if(st.isEmpty())    return;
+        int top=st.pop();
+        reverseStack(st);
+        insert(st,top);
+    }
+    public static void insert(Stack<Integer> st,int num){
+        if(st.isEmpty()){
+            st.push(num);
+            return;
+        }
+        int top=st.pop();
+        insert(st,num);
+        st.push(top);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Generate all binary strings
+Difficulty: MediumAccuracy: 63.9%Submissions: 46K+Points: 4Average Time: 20m
+Given an integer n. You need to generate all the binary strings of n characters representing bits.
+
+Note: Return the strings in  ascending order.
+
+Examples:
+
+Input: n = 2
+Output: [00, 01, 10, 11]
+Explanation: As each position can be either 0 or 1, the total possible combinations are 4.
+Input: n = 3
+Output: [000, 001, 010, 011, 100, 101, 110, 111]
+Explanation: As each position can be either 0 or 1, the total possible combinations are 8.
+class Solution {
+    public ArrayList<String> binstr(int n) {
+        // code here
+        ArrayList<String> res= new ArrayList<>();
+        backtrack(0,n,new StringBuilder(),res);
+        return res;
+    }
+    public void backtrack(int in,int n,StringBuilder cur,ArrayList<String> res){
+        if(in==n){
+            res.add(cur.toString());
+            return;
+        }
+        cur.append('0');
+        backtrack(in+1,n,cur,res);
+        cur.deleteCharAt(cur.length()-1);
+        cur.append('1');
+        backtrack(in+1,n,cur,res);
+        cur.deleteCharAt(cur.length()-1);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+22. Generate Parentheses
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+ 
+
+Constraints:
+
+1 <= n <= 8
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> res=new ArrayList<>();
+        backtrack(0,0,n,new StringBuilder(),res);
+        return res;
+    }
+    public void backtrack(int op,int cl,int n,StringBuilder cur,List<String> res){
+        if(cur.length()==2*n){
+            res.add(cur.toString());
+            return;
+        }
+        if(op<n){
+            cur.append('(');
+            backtrack(op+1,cl,n,cur,res);
+            cur.deleteCharAt(cur.length()-1);
+        }
+        if(cl<op){
+            cur.append(')');
+            backtrack(op,cl+1,n,cur,res);
+            cur.deleteCharAt(cur.length()-1);    
+        }
+    }
+}
+
+
+
+
+
+
+
+
+78. Subsets
+
+Given an integer array nums of unique elements, return all possible subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+ class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res=new ArrayList<>();
+        List<Integer> cur=new ArrayList<>();
+        backtrack(0,nums,cur,res);
+        return res;
+    }
+    public void backtrack(int in,int[] nums, List<Integer>  cur,List<List<Integer>> res){
+        if(in==nums.length){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+        backtrack(in+1,nums,cur,res);
+        cur.add(nums[in]);
+        backtrack(in+1,nums,cur,res);
+        cur.remove(cur.size()-1);
+    }
+}
+
+
+
+
+
+
+
+
+
+Count all subsequences with sum K
+
+Given an array nums and an integer k.Return the number of non-empty subsequences of nums such that the sum of all elements in the subsequence is equal to k.
+
+
+Example 1
+
+Input : nums = [4, 9, 2, 5, 1] , k = 10
+
+Output : 2
+
+Explanation : The possible subsets with sum k are [9, 1] , [4, 5, 1].
+
+Example 2
+
+Input : nums = [4, 2, 10, 5, 1, 3] , k = 5
+
+Output : 3
+
+Explanation : The possible subsets with sum k are [4, 1] , [2, 3] , [5].
+
+Now your turn!
+
+Input : nums = [1, 10, 4, 5] , k = 16
+class Solution {
+    public int countSubsequenceWithTargetSum(int[] nums, int k) {
+        //your code goes here
+        int n=nums.length;
+        return find(n,nums,k);
+    }
+    public int find(int n,int[] nums,int k){
+        if(k==0)    return 1;
+        if(n==0 || k<0) return 0;
+
+        int include=find(n-1,nums,k-nums[n-1]);
+        int exclude=find(n-1,nums,k);
+        return include+exclude;
+    }
+}
+
+
+
+
+
+Check if there exists a subsequence with sum K
+Given an array arr and target sum k, check whether there exists a subsequence such that the sum of all elements in the subsequence equals the given target sum(k).
+
+
+Example:
+
+Input:  arr = [10,1,2,7,6,1,5], k = 8.
+Output:  Yes
+Explanation:  Subsequences like [2, 6], [1, 7] sum upto 8
+
+Input:  arr = [2,3,5,7,9], k = 100. 
+Output:  No
+Explanation:  No subsequence can sum upto 100
+Your Task:
+You don't need to read or print anything. Your task is to complete the boolean function checkSubsequenceSum() which takes N, arr and K as input parameter and returns true/false based on the whether any subsequence with sum K could be found.
+
+
+Expected Time Complexity: O(N * K).
+Expected Auxiliary Space: O(N * K).
+
+// User function Template for Java
+
+class Solution {
+    public static boolean checkSubsequenceSum(int N, int[] arr, int K) {
+        // code here
+        
+        return find(N,K,arr);
+    }
+    public static boolean find(int n,int k,int[] arr){
+        if(k==0)    return true;
+        if(n==0 || k<0) return false;
+        
+        boolean in=find(n-1,k-arr[n-1],arr);
+        if(in)  return true;
+        boolean ex=find(n-1,k,arr);
+        return in || ex;
+    }
+}
+
+
+
+
+39. Combination Sum
+Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+
+The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+
+The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+
+ 
+
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+Example 2:
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+Example 3:
+
+Input: candidates = [2], target = 1
+Output: []
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res=new ArrayList<>();
+        List<Integer> cur=new ArrayList<>();
+        find(candidates.length,candidates,target,cur,res);
+        return res;
+    }
+    public void find(int n,int[] arr,int k,List<Integer> cur,  List<List<Integer>> res){
+        if(k==0){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+
+        if(n==0 ) return;
+        if(arr[n-1]<=k){
+            cur.add(arr[n-1]);
+            find(n,arr,k-arr[n-1],cur,res);
+            cur.remove(cur.size()-1);
+        }
+        find(n-1,arr,k,cur,res);
+    }
+}
+
+
+
+
+
+
+40. Combination Sum II
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+ 
+
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res=new ArrayList<>();
+        List<Integer> cur=new ArrayList<>();
+        Arrays.sort(candidates); 
+
+        find(0,candidates,target,cur,res);
+        return res;
+    }
+    public void find(int ind,int[] arr,int k,List<Integer> cur,  List<List<Integer>> res){
+        if(k==0){
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+
+        if(ind==arr.length ||  k<0) return;
+        
+        cur.add(arr[ind]);
+        find(ind+1,arr,k-arr[ind],cur,res);
+        cur.remove(cur.size()-1);
+        int nextIndex=ind+1;
+        while(nextIndex<arr.length && arr[ind]==arr[nextIndex]){
+            nextIndex++;
+        }
+        find(nextIndex,arr,k,cur,res);
+    }
+}
+
+
+
+
+
+216. Combination Sum III
+Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+
+Only numbers 1 through 9 are used.
+Each number is used at most once.
+Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+
+ 
+
+Example 1:
+
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+Explanation:
+1 + 2 + 4 = 7
+There are no other valid combinations.
+Example 2:
+
+Input: k = 3, n = 9
+Output: [[1,2,6],[1,3,5],[2,3,4]]
+Explanation:
+1 + 2 + 6 = 9
+1 + 3 + 5 = 9
+2 + 3 + 4 = 9
+There are no other valid combinations.
+Example 3:
+
+Input: k = 4, n = 1
+Output: []
+Explanation: There are no valid combinations.
+Using 4 different numbers in the range [1,9], the smallest sum we can get is 1+2+3+4 = 10 and since 10 > 1, there are no valid combination.
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        
+        List<List<Integer>> res=new ArrayList<>();
+        int []arr={1,2,3,4,5,6,7,8,9};
+        find(0,k,n,arr,new ArrayList<>(),res);
+        return res;
+    }
+    public void find(int i,int k,int sum,int []arr,List<Integer>cur, List<List<Integer>> res){
+        if(sum==0){
+           if(cur.size()==k) res.add(new ArrayList<>(cur));
+            return;
+        }
+        if(sum<0 || i>=9) return;
+        cur.add(arr[i]);
+        find(i+1,k,sum-arr[i],arr,cur,res);
+        cur.remove(cur.size()-1);
+        find(i+1,k,sum,arr,cur,res);
+    }
+}
+
+
+
+
+
+
+Subset Sums
+Given a array arr of integers, return the sums of all subsets in the list.  Return the sums in any order.
+
+Examples:
+
+Input: arr[] = [2, 3]
+Output: [0, 2, 3, 5]
+Explanation: When no elements are taken then Sum = 0. When only 2 is taken then Sum = 2. When only 3 is taken then Sum = 3. When elements 2 and 3 are taken then Sum = 2+3 = 5.
+Input: arr[] = [1, 2, 1]
+Output: [0, 1, 1, 2, 2, 3, 3, 4]
+Explanation: The possible subset sums are 0 (no elements), 1 (either of the 1's), 2 (the element 2), and their combinations.
+Input: arr[] = [5, 6, 7]
+Output: [0, 5, 6, 7, 11, 12, 13, 18]
+Explanation: The possible subset sums are 0 (no elements), 5, 6, 7, and their combinations.
+// User function Template for Java//User function Template for Java
+class Solution {
+    public ArrayList<Integer> subsetSums(int[] arr) {
+        // code here
+        ArrayList<Integer> res=new ArrayList<>();
+        ss(0,0,arr,res);
+        return res;
+    }
+    public void ss(int in,int sum,int[] arr,ArrayList<Integer> res){
+        if(in==arr.length){
+            res.add(sum);
+            return;
+        }
+        ss(in+1,sum,arr,res);
+        sum+=arr[in];
+        ss(in+1,sum,arr,res);
+        sum-=arr[in];
+            
+    }
+    
+}
+
+
+
+
+
+
+Subset II
+Difficulty: MediumAccuracy: 50.0%Submissions: 15K+Points: 4Average Time: 30m
+You are given an array arr[] of positive integers (which may contain duplicates), your task is to find all the unique subsets of the array.
+
+Note: You can return the subsets in any order, the driver code will print them in sorted order.
+
+Examples:
+
+Input: arr[] = [1, 5, 6]
+Output: [[], [1], [1, 5], [1, 5, 6], [1, 6], [5], [5, 6], [6]]
+Explanation: The number of all the possible subsets will be 2n.
+Now the unique subsets are [], [1], [1, 5], [1, 5, 6], [1, 6], [5], [5, 6], [6].
+Input: arr[] = [1, 2, 2]
+Output: [[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
+Explanation: The number of all the possible subsets will be 2n.
+Now the unique subsets are [], [1], [1, 2], [1, 2, 2], [2], [2, 2].
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums); 
+        List<List<Integer>> ans = new ArrayList<>();
+        subset(nums, new ArrayList<>(), 0, ans);
+        return ans;
+    }
+
+    public List<List<Integer>>subset(int[] nums, ArrayList<Integer> cur, int index, List<List<Integer>> ans) {
+        if (index == nums.length) {
+            ans.add(new ArrayList<>(cur));
+            return ans;
+        }
+
+        int nextIndex = index + 1;
+        while (nextIndex < nums.length && nums[nextIndex] == nums[index]) {
+            nextIndex++;
+        }
+
+        cur.add(nums[index]);
+        subset(nums, cur, index + 1, ans);
+        cur.remove(cur.size() - 1);
+
+        subset(nums, cur, nextIndex, ans);
+        return ans;
+    }
+}
+
+
+
+17. Letter Combinations of a Phone Number
+
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+ 
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        
+        List<String> res = new ArrayList<>();
+        String[] map={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        find(0,new StringBuilder(),res,digits,map);
+        return res;
+    }
+    public void find(int in,StringBuilder cur,List<String> res,String dig,String[] map){
+        if(cur.length()==dig.length()){
+            res.add(cur.toString());
+            return;
+        }
+       // if(in>=dig.length()) return;
+        String a=map[dig.charAt(in)-'0'];
+        for(char c :a.toCharArray()){
+            cur.append(c);
+            find(in+1,cur,res,dig,map);
+            cur.deleteCharAt(cur.length()-1);
+        }
+    }
+}
+
+
+
+
+131. Palindrome Partitioning
+Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+ 
+
+Example 1:
+
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+Example 2:
+
+Input: s = "a"
+Output: [["a"]]
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans=new ArrayList<>();
+        List<String> cur=new ArrayList<>();
+        return ss(s,0,cur,ans);
+    }
+    public List<List<String>>  ss(String s,int index,List<String> cur,List<List<String>> ans){
+        if(index==s.length()){
+            ans.add(new ArrayList<String>(cur));
+            return ans;
+        }
+        for(int i=index;i<s.length();i++){
+            if(issafe(s,index,i)){
+                cur.add(s.substring(index,i+1));
+                ss(s,i+1,cur,ans);
+                cur.remove(cur.size()-1);
+            }
+        }
+        return ans;
+    }
+    public boolean issafe(String s,int i,int e){
+        while(i<=e){
+            if(s.charAt(i)!=s.charAt(e)){
+                return false;
+            }
+            i++;
+            e--;
+        }
+        return true;
+    }
+}
+
+
+
+
+
+79. Word Search
+
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+ 
+
+Example 1:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+Output: true
+Example 2:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+Output: true
+Example 3:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+Output: false
+class Solution {
+    int dr[]={-1,0,1,0};
+    int dc[]={0,1,0,-1};
+    int m,n;
+    int vis[][];
+    public boolean exist(char[][] board, String word) {
+        m=board.length;
+        n=board[0].length;
+        vis=new int[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(board[i][j]==word.charAt(0)){
+                    vis[i][j]=1;
+                    if(find(board,word,1,i,j)){
+                        
+                        return true;
+                    }
+                    vis[i][j]=0;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean find(char [][] board,String word,int in,int r,int c){
+        if(in==word.length())   return true;
+        if(r==m && c==n)  return false;
+        for(int i=0;i<4;i++){
+            int nr=r+dr[i];
+            int nc=c+dc[i];
+            if(nr>=0 && nr<m && nc>=0 && nc<n && vis[nr][nc]!=1 && board[nr][nc]==word.charAt(in)){
+                vis[nr][nc]=1;
+                if(find(board,word,in+1,nr,nc)) return true;
+                 vis[nr][nc]=0;
+            }
+           
+        }
+        return false;
+    }
+}
+ 
+
+
+
+
+
+51. N-Queens
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+ 
+
+Example 1:
+
+
+Input: n = 4
+Output: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as shown above
+Example 2:
+
+Input: n = 1
+Output: [["Q"]]
+
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans = new ArrayList<>();
+        solve(n,0,ans,new int[n]);
+        return ans;
+    }
+    public boolean issafe(int row,int col,int n,int[] arr){
+        for(int i=0;i<row;i++){
+            int c=arr[i];
+            if(c==col || Math.abs(i-row)==Math.abs(c-col))  return false;
+        }
+        return true;
+    }
+    public void solve(int n,int row,List<List<String>> ans,int[] arr){
+        if(row==n){
+            List<String> board = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < n; j++) {
+                    if (arr[i] == j) sb.append('Q');
+                    else sb.append('.');
+                }
+                board.add(sb.toString());
+            }
+            ans.add(new ArrayList<>(board));
+            return ;
+        }
+        for(int i=0;i<n;i++){
+            if(issafe(row,i,n,arr)){
+                arr[row]=i;
+                solve(n,row+1,ans,arr);
+            }
+        }
+    }
+}
+
+
+
+Rat in a Maze
+Consider a rat placed at position (0, 0) in an n x n square matrix maze[][]. The rat's goal is to reach the destination at position (n-1, n-1). The rat can move in four possible directions: 'U'(up), 'D'(down), 'L' (left), 'R' (right).
+
+The matrix contains only two possible values:
+
+0: A blocked cell through which the rat cannot travel.
+1: A free cell that the rat can pass through.
+Your task is to find all possible paths the rat can take to reach the destination, starting from (0, 0) and ending at (n-1, n-1), under the condition that the rat cannot revisit any cell along the same path. Furthermore, the rat can only move to adjacent cells that are within the bounds of the matrix and not blocked.
+If no path exists, return an empty list.
+
+Note: Return the final result vector in lexicographically smallest order.
+
+Examples:
+
+Input: maze[][] = [[1, 0, 0, 0], [1, 1, 0, 1], [1, 1, 0, 0], [0, 1, 1, 1]]
+Output: ["DDRDRR", "DRDDRR"]
+Explanation: The rat can reach the destination at (3, 3) from (0, 0) by two paths - DRDDRR and DDRDRR, when printed in sorted order we get DDRDRR DRDDRR.
+Input: maze[][] = [[1, 0], [1, 0]]
+Output: []
+Explanation: No path exists as the destination cell (1, 1) is blocked.
+Input: maze[][] = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+Output: ["DDRR", "RRDD"]
+Explanation: The rat has two possible paths to reach the destination: DDRR and RRDD.
+
+
+class Solution {
+    int dr[]={-1,1,0,0};
+    int dc[]={0,0,-1,1};
+    char l[]={'U','D','L','R'}; 
+    public ArrayList<String> ratInMaze(int[][] maze) {
+        // code here
+        ArrayList<String> res=new ArrayList<>();
+        if(maze[0][0]==0 || maze[maze.length-1][maze.length-1]==0)   return res;
+        int vis[][]=new int[maze.length][maze.length];
+        vis[0][0]=1;
+        dfs(0,0,new StringBuilder(),maze,res,vis);
+        Collections.sort(res);
+        return res;
+    }
+    public void dfs(int r,int c,StringBuilder cur,int[][] maze,ArrayList<String> res,int vis[][]){
+        if(r==maze.length-1 && c==maze.length-1){
+            res.add(cur.toString());
+            return;
+        }
+        for(int i=0;i<4;i++){
+            int nr=r+dr[i];
+            int nc=c+dc[i];
+            if(nr>=0 && nr<maze.length && nc>=0 && nc<maze.length && vis[nr][nc]!=1 && maze[nr][nc]==1){
+                vis[nr][nc]=1;
+                cur.append(l[i]);
+                dfs(nr,nc,cur,maze,res,vis);
+                vis[nr][nc]=0;
+                cur.deleteCharAt(cur.length()-1);
+            }
+        }
+    }
+}
+
+
+
+
+
+39. Word Break
+Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+ 
+
+Example 1:
+
+Input: s = "leetcode", wordDict = ["leet","code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+Example 2:
+
+Input: s = "applepenapple", wordDict = ["apple","pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: false
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> set = new HashSet<>(wordDict);
+        Boolean[] memo = new Boolean[s.length()];
+        return dfs(0, s, set, memo);
+    }
+    private boolean dfs(int start, String s, Set<String> dict, Boolean[] memo) {
+        if (start == s.length()) return true;
+        if (memo[start] != null) return memo[start];
+        for (int end = start + 1; end <= s.length(); end++) {
+            if (dict.contains(s.substring(start, end))) {
+                if (dfs(end, s, dict, memo)) {
+                    return memo[start] = true;
+                }
+            }
+        }
+        return memo[start] = false;
+    }
+}
+
+
+
+
+M-Coloring Problem
+
+You are given an undirected graph consisting of V vertices and E edges represented by a list edges[][], along with an integer m. Your task is to determine whether it is possible to color the graph using at most m different colors such that no two adjacent vertices share the same color. Return true if the graph can be colored with at most m colors, otherwise return false.
+
+Note: The graph is indexed with 0-based indexing.
+
+Examples:
+
+Input: V = 4, edges[][] = [[0, 1], [1, 3], [2, 3], [3, 0], [0, 2]], m = 3
+Output: true
+Explanation: It is possible to color the given graph using 3 colors, for example, one of the possible ways vertices can be colored as follows:
+
+Vertex 0: Color 1
+Vertex 1: Color 2
+Vertex 2: Color 2
+Vertex 3: Color 3
+Input: V = 3, edges[][] = [[0, 1], [1, 2], [0, 2]], m = 2
+Output: false
+Explanation: It is not possible to color the given graph using only 2 colors because vertices 0, 1, and 2 form a triangle.
+
+class Solution {
+    int color[];
+    boolean graphColoring(int v, int[][] edges, int m) {
+        // code here
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<v;i++){
+            adj.add(new ArrayList<>());
+        }
+        color=new int[v];
+        for(int row[] : edges){
+            adj.get(row[0]).add(row[1]);
+            adj.get(row[1]).add(row[0]);
+        }
+        return solve(0,m,v,adj);
+    }
+    boolean solve(int node,int m,int v,ArrayList<ArrayList<Integer>> adj){
+        if(node==v)
+            return true;
+        for(int c=1;c<=m;c++){
+            if(issafe(node,c,adj,v)){
+                color[node]=c;
+                if(solve(node+1,m,v,adj)){
+                    return true;
+                }
+                color[node]=0;
+            }
+        }
+        return false;
+    }
+    boolean issafe(int node,int c,ArrayList<ArrayList<Integer>> adj,int v){
+        for(int temp :adj.get(node)){
+            if(color[temp]==c)
+                return false;
+        }
+        return true;
+    }
+}
+
+
+
+
+37. Sudoku Solver
+
+Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+A sudoku solution must satisfy all of the following rules:
+
+Each of the digits 1-9 must occur exactly once in each row.
+Each of the digits 1-9 must occur exactly once in each column.
+Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+The '.' character indicates empty cells.
+
+ 
+
+Example 1:
+
+
+Input: board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+Output: 
+[["5","3","4","6","7","8","9","1","2"],
+["6","7","2","1","9","5","3","4","8"],
+["1","9","8","3","4","2","5","6","7"],
+["8","5","9","7","6","1","4","2","3"],
+["4","2","6","8","5","3","7","9","1"],
+["7","1","3","9","2","4","8","5","6"],
+["9","6","1","5","3","7","2","8","4"],
+["2","8","7","4","1","9","6","3","5"],
+["3","4","5","2","8","6","1","7","9"]]
+  class Solution {
+    public void solveSudoku(char[][] board) {
+        solve(board);
+    }
+    public boolean solve(char[][] board){
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]=='.'){
+                   for(char ch='1';ch<='9' ;ch++){
+                        if(valid(i,j,ch,board)){
+                            board[i][j]=ch;
+                            if(solve(board))    return true;
+                            board[i][j]='.';
+                        }
+                   }
+                   return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean valid(int r,int c,char ch,char[][] board){
+        for(int i=0;i<9;i++){
+            if(board[r][i]==ch || board[i][c]==ch)  return false;
+        }
+        int sr=3*(r/3);
+        int sc=3*(c/3);
+        for(int i=sr;i<sr+3;i++){
+            for(int j=sc;j<sc+3;j++){
+                if(board[i][j]==ch){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+
+
+
+282. Expression Add Operators
+Given a string num that contains only digits and an integer target, return all possibilities to insert the binary operators '+', '-', and/or '*' between the digits of num so that the resultant expression evaluates to the target value.
+
+Note that operands in the returned expressions should not contain leading zeros.
+
+Note that a number can contain multiple digits.
+
+ 
+
+Example 1:
+
+Input: num = "123", target = 6
+Output: ["1*2*3","1+2+3"]
+Explanation: Both "1*2*3" and "1+2+3" evaluate to 6.
+Example 2:
+
+Input: num = "232", target = 8
+Output: ["2*3+2","2+3*2"]
+Explanation: Both "2*3+2" and "2+3*2" evaluate to 8.
+Example 3:
+
+Input: num = "3456237490", target = 9191
+Output: []
+Explanation: There are no expressions that can be created from "3456237490" to evaluate to 9191.
+class Solution {
+    public List<String> addOperators(String num, int target) {
+        List<String> res = new ArrayList<>();
+        solve(0, 0, 0, new StringBuilder(), num, target, res);
+        return res;
+    }
+
+    public void solve(int ind, long cur_sum, long pre_sum,
+                      StringBuilder sb, String num, int target, List<String> res) {
+
+        if (ind == num.length()) {
+            if (cur_sum == target) {
+                res.add(sb.toString());
+            }
+            return;
+        }
+
+        for (int i = ind; i < num.length(); i++) {
+
+            if (i > ind && num.charAt(ind) == '0') break;
+
+            String cur_str = num.substring(ind, i + 1);
+            long cur_num = Long.parseLong(cur_str);
+
+            int len = sb.length();  
+
+            if (ind == 0) {
+                sb.append(cur_str);
+                solve(i + 1, cur_num, cur_num, sb, num, target, res);
+                sb.setLength(len);   
+            } else {
+                sb.append("+").append(cur_str);
+                solve(i + 1, cur_sum + cur_num, cur_num, sb, num, target, res);
+                sb.setLength(len);
+                sb.append("-").append(cur_str);
+                solve(i + 1, cur_sum - cur_num, -cur_num, sb, num, target, res);
+                sb.setLength(len);
+                sb.append("*").append(cur_str);
+                solve(i + 1, cur_sum - pre_sum + pre_sum * cur_num,
+                      pre_sum * cur_num, sb, num, target, res);
+                sb.setLength(len);
+            }
+        }
+    }
+}
+
+ 

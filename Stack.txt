@@ -1,0 +1,1771 @@
+class Stack{
+    int[] arr;
+    int top;
+    int size;
+    Stack(int n){
+        arr=new int[n];
+        top=-1;
+        size=n;
+    }
+    void push(int data){
+        if(top>=size-1){
+            System.out.println("stack is full");
+            return;
+        }
+        arr[++top]=data;
+    }
+    void pop(){
+        if(top==-1){
+            System.out.println("empty stack");
+            return;
+        }
+        System.out.println("poped element is "+arr[top--]);
+    }
+    void peek(){
+        if(top==-1){
+            System.out.println("empty stack");
+            return;
+        }
+        System.out.println("peek element is "+arr[top]);
+    }
+    void display(){
+        if (top==-1) {
+            System.out.println("empty stack");
+            return;
+        }
+        int temp=top;
+        while(temp>=0){
+            System.out.println(arr[temp]);
+            temp--;
+        }
+    }
+}
+
+public class StackUsingArray {
+    public static void main(String[] args) {
+        Stack s=new Stack(5);
+        s.push(4);
+        s.push(5);
+        s.push(6);
+        s.push(7);
+        s.push(8);
+        s.push(9);
+        s.display();
+        s.pop();
+        s.display();
+        s.peek();
+    }
+}
+
+
+
+2.StackUsing LinkedList
+class StackNode{
+    int data;
+    StackNode next;
+    StackNode(int data){
+       this.data=data;
+       this.next=null;
+    }
+}
+class LStack{
+    StackNode head=null;
+    void push(int data){
+        StackNode newnode=new StackNode(data);
+        if(head==null){
+            head=newnode;
+        }
+        else{
+            newnode.next=head;
+            head=newnode;
+        }
+    }
+    void pop(){
+        if(head==null){
+            System.out.println("empty stack");
+            return;
+        }
+        System.out.println("poped element="+head.data);
+        StackNode temp=head;
+        head=head.next;
+        temp=null;
+    }
+    void peek(){
+        if(head==null){
+            System.out.println("empty stack");
+            return;
+        }
+        System.out.println("peek element="+head.data);
+    }
+    void display(){
+        if(head==null){
+            System.out.println("empty stack");
+            return;
+        }
+        StackNode temp=head;
+        while (temp!=null) {
+            System.out.println(temp.data);
+            temp=temp.next;
+        }
+    }
+}
+public class StackUsingLinkedList {
+    public static void main(String[] args) {
+        LStack l=new LStack();
+        l.push(4);
+        l.push(5);
+        l.push(6);
+        l.push(7);
+        l.peek();
+        l.display();
+        l.pop();
+        l.display();
+        l.peek();
+    }
+}
+
+
+
+
+
+
+
+3.IMPLEMENTATION OF STACK USING SINGLE QUEUE;
+class MyStack {
+    private Queue<Integer> q;
+    public MyStack() {
+        q = new LinkedList<>();
+    }
+
+    public void push(int x) {
+        q.add(x);
+        for (int i = 0; i < q.size() - 1; i++) {
+            q.add(q.poll());
+        }
+    }
+
+    public int pop() {
+        return q.poll();
+    }
+
+    public int top() {
+        return q.peek();
+    }
+
+    public boolean empty() {
+        return q.isEmpty();
+    }
+} 
+
+
+
+
+
+
+
+3.IMPLEMENTATION OF STACK USING TWO QUEUE;
+
+import java.util.*;
+
+class MyStack {
+
+    private Queue<Integer> q1;
+    private Queue<Integer> q2;
+
+    public MyStack() {
+        q1 = new ArrayDeque<>();
+        q2 = new ArrayDeque<>();
+    }
+
+    public void push(int x) {
+        // Step 1: Add new element to q2
+        q2.add(x);
+
+        // Step 2: Move all elements from q1 to q2
+        while (!q1.isEmpty()) {
+            q2.add(q1.poll());
+        }
+
+        // Step 3: Swap q1 and q2
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+
+    public int pop() {
+        return q1.poll();   // direct pop
+    }
+
+    public int top() {
+        return q1.peek();   // direct top
+    }
+
+    public boolean empty() {
+        return q1.isEmpty();
+    }
+}
+
+
+5.IMPLEMENTATION OF QUEUE USING STACK;
+
+
+import java.util.*;
+
+class MyQueue {
+
+    private Stack<Integer> s1;
+    private Stack<Integer> s2;
+
+    public MyQueue() {
+        s1 = new Stack<>();
+        s2 = new Stack<>();
+    }
+
+    public void push(int x) {
+        // Step 1: Move all elements to s2
+        while (!s1.isEmpty()) {
+            s2.push(s1.pop());
+        }
+
+        // Step 2: Push new element
+        s1.push(x);
+
+        // Step 3: Move back to s1
+        while (!s2.isEmpty()) {
+            s1.push(s2.pop());
+        }
+    }
+
+    public int pop() {
+        return s1.pop();
+    }
+
+    public int peek() {
+        return s1.peek();
+    }
+
+    public boolean empty() {
+        return s1.isEmpty();
+    }
+}
+
+
+
+
+
+
+20. Valid Parentheses
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Every close bracket has a corresponding open bracket of the same type.
+ 
+
+Example 1:
+
+Input: s = "()"
+
+Output: true
+
+Example 2:
+
+Input: s = "()[]{}"
+
+Output: true
+
+Example 3:
+
+Input: s = "(]"
+
+Output: false
+
+Example 4:
+
+Input: s = "([])"
+
+Output: true
+
+Example 5:
+
+Input: s = "([)]"
+
+Output: false
+
+ class Solution {
+    public boolean isValid(String s) {
+        int i=0;
+        char[] stack=new char[s.length()];
+        int top=-1;
+        int l=s.length();
+        while(i<l){
+            char ch=s.charAt(i++);
+            if(ch=='(' || ch=='{' || ch=='['){
+                stack[++top]=ch;
+            }
+            else{
+                if(top==-1){
+                    return false;
+                }
+                char a=stack[top--];
+                    if((ch==']' && a!='[') || (ch==')' && a!='(') || (ch=='}' && a!='{')) {
+                        return false;
+                    }
+                }
+        }
+        return top==-1;
+    }
+}
+
+
+
+
+
+
+155. Min Stack
+
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+MinStack() initializes the stack object.
+void push(int val) pushes the element val onto the stack.
+void pop() removes the element on the top of the stack.
+int top() gets the top element of the stack.
+int getMin() retrieves the minimum element in the stack.
+You must implement a solution with O(1) time complexity for each function.
+
+ 
+
+Example 1:
+
+Input
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+Output
+[null,null,null,null,-3,null,0,-2]
+
+Explanation
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin(); // return -3
+minStack.pop();
+minStack.top();    // return 0
+minStack.getMin(); // return -2
+import java.util.*;
+
+class MinStack {
+    
+    private Stack<Integer> stack;
+    private int min;
+
+    public MinStack() {
+        stack = new Stack<>();
+        min = Integer.MAX_VALUE;
+    }
+    
+    public void push(int val) {
+        if (val <= min) {
+            stack.push(min);  // store previous min
+            min = val;
+        }
+        stack.push(val);
+    }
+    
+    public void pop() {
+        if (stack.isEmpty()) return;
+
+        int popped = stack.pop();
+        if (popped == min) {
+            min = stack.pop();  // restore previous min
+        }
+    }
+    
+    public int top() {
+        return stack.isEmpty() ? -1 : stack.peek();
+    }
+    
+    public int getMin() {
+        return stack.isEmpty() ? -1 : min;
+    }
+}
+
+
+
+
+
+
+
+
+Infix to Postfix
+You are given a string s representing an infix expression. Convert this infix expression to a postfix expression.
+
+Infix expression: The expression of the form a op b. When an operator is in between every pair of operands.
+Postfix expression: The expression of the form a b op. When an operator is followed for every pair of operands.
+Note: The precedence order is as follows: (^) has the highest precedence and is evaluated from right to left, (* and /) come next with left to right associativity, and (+ and -) have the lowest precedence with left to right associativity.
+
+Examples :
+
+Input: s = "a*(b+c)/d"
+Output: abc+*d/
+Explanation: The expression is a*(b+c)/d. First, inside the brackets, b+c becomes bc+. Now the expression looks like a*(bc+)/d. Next, multiply a with (bc+), so it becomes abc+* . Finally, divide this result by d, so it becomes abc+*d/.
+Input: s = "a+b*c+d"
+Output: abc*+d+
+Explanation: The expression a+b*c+d is converted by first doing b*c -> bc*, then adding a -> abc*+, and finally adding d -> abc*+d+.
+Input: s = "(a+b)*(c+d)"
+Output: ab+cd+*
+Explanation: The expression (a+b)*(c+d) is converted by first doing (a+b) -> ab+, then doing (c+d) -> cd+, and finally the expression ab+*cd+ becomes ab+cd+*. 
+
+
+class Solution {
+    static int presidence(char ch){
+        if(ch=='+' || ch=='-') return 1;
+        else if(ch=='*' || ch=='/') return 2;
+        else if(ch=='^') return 3;
+        else return -1;
+    }
+
+    public static String infixToPostfix(String s) {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder postfix = new StringBuilder();  
+        int i = 0;
+
+        while(i < s.length()){
+            char ch = s.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                postfix.append(ch);
+            }
+            else if(ch == '('){
+                stack.push(ch);
+            }
+            else if(ch == ')'){
+                while(!stack.isEmpty() && stack.peek() != '('){
+                    postfix.append(stack.pop());
+                }
+                stack.pop();
+            }
+            else{
+                while(!stack.isEmpty() && 
+                     (
+                        presidence(stack.peek()) > presidence(ch) ||
+                       (presidence(stack.peek()) == presidence(ch) && ch != '^')
+                     )
+                ){
+                    postfix.append(stack.pop());
+                }
+                stack.push(ch);
+            }
+            i++;
+        }
+        while(!stack.isEmpty()){
+            postfix.append(stack.pop());
+        }
+
+        return postfix.toString();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Infix To Prefix Notation
+You are given a string s representing an infix expression. Convert this infix expression to a prefix expression.
+
+Infix expression: The expression of the form a op b. When an operator is in between every pair of operands.
+Prefix expression: The expression of the form op a b. When an operator comes before its two operands.
+
+Note: The precedence order is as follows: (^) has the highest precedence and is evaluated from right to left. (* and /) come next with left to right associativity, and (+ and -) have the lowest precedence with left to right associativity.
+
+Examples:
+
+Input: s = "a*(b+c)/d"
+Output: /*a+bcd
+Explaination: The infix expression is a*(b+c)/d. First, inside the brackets, b + c becomes +bc. Now the expression looks like a*(+bc)/d. Next, multiply a with (+bc), so it becomes *a+bc. Finally, divide this result by d, so it becomes /*a+bcd.
+Input: s = "(a-b/c)*(a/k-l)"
+Output: *-a/bc-/akl
+Explaination: The infix expression is (a-b/c)*(a/k-l). First, inside the brackets, b/c becomes /bc and a/k becomes /ak.Now the expression looks like (a-/bc) * (/ak-l).Next, handle the subtractions: a-/bc becomes -a/bc, and /ak-l becomes -/akl. Finally, multiply the two results: (-a/bc * -/akl) becomes *-a/bc-/akl.
+
+class Solution {
+    public int precidence(char a){
+        if(a=='+' || a=='-') return 1;
+        else if(a=='*' || a=='/') return 2;
+        else if(a=='^') return 3;
+        else return -1;
+    }
+    public String infixToPrefix(String s) {
+        StringBuilder prefix = new StringBuilder();
+        Stack<Character> st = new Stack<>();
+        for(int i = s.length() - 1; i >= 0; i--){
+            char ch = s.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                prefix.append(ch);
+            }
+            else if(ch == ')'){
+                st.push(ch);
+            }
+            else if(ch == '('){
+                while(!st.isEmpty() && st.peek() != ')'){
+                    prefix.append(st.pop());
+                }
+                if(!st.isEmpty()) st.pop();
+            }
+            else{
+                while(!st.isEmpty() &&
+                     (precidence(st.peek()) > precidence(ch) ||
+                     (precidence(st.peek()) == precidence(ch) && ch == '^'))){
+                    prefix.append(st.pop());
+                }
+                st.push(ch);
+            }
+        }
+        
+        while(!st.isEmpty()){
+            prefix.append(st.pop());
+        }
+        
+        return prefix.reverse().toString();
+    }
+}
+
+
+
+
+
+
+
+Postfix to Infix Conversion
+You are given a string that represents the postfix form of a valid mathematical expression. Convert it to its infix form.
+
+Example:
+
+Input:
+ab*c+ 
+Output: 
+((a*b)+c)
+Explanation: 
+The above output is its valid infix form.
+
+
+// User function Template for Java
+
+class Solution {
+    static String postToInfix(String exp) {
+        // code here
+        Stack<String> st=new Stack<>();
+        int i=0;
+        while(i<exp.length()){
+            char ch=exp.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                st.push(String.valueOf(ch));
+            }
+            else{
+                String b=st.pop();
+                String a=st.pop();
+                String res="("+a+ch+b+")";
+                st.push(res);
+            }
+            i++;
+        }
+        return st.peek();
+    }
+}
+
+
+
+
+
+
+
+Prefix to Infix Conversion
+You are given a string S of size N that represents the prefix form of a valid mathematical expression. The string S contains only lowercase and uppercase alphabets as operands and the operators are +, -, *, /, %, and ^.Convert it to its infix form.
+
+Example 1:
+
+Input: 
+*-A/BC-/AKL
+Output: 
+((A-(B/C))*((A/K)-L))
+Explanation: 
+The above output is its valid infix form.
+
+
+// User function Template for Java
+
+class Solution {
+    static String preToInfix(String pre_exp) {
+        // code here
+        Stack<String> st=new Stack<>();
+        int i=pre_exp.length()-1;
+        while(i>=0){
+            char ch=pre_exp.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                st.push(String.valueOf(ch));
+            }
+            else{
+                String a=st.pop();
+                String b=st.pop();
+                String res="("+a+ch+b+")";
+                st.push(res);
+            }
+            i--;
+        }
+        return st.peek();
+
+    }
+}
+
+
+
+
+
+
+
+
+
+Postfix to Prefix Conversion
+You are given a string that represents the postfix form of a valid mathematical expression. Convert it to its prefix form.
+
+Example 1:
+
+Input: 
+ABC/-AK/L-*
+Output: 
+*-A/BC-/AKL
+Explanation: 
+The above output is its valid prefix form.
+
+Example 2:
+
+Input: 
+ab+
+Output: 
++ab
+Explanation: 
+The above output is its valid prefix form.
+
+
+
+// User function Template for Java
+
+class Solution {
+    static String postToPre(String post_exp) {
+        // code here
+        Stack<String> st=new Stack<>();
+        int i=0;
+        while(i<post_exp.length()){
+            char ch=post_exp.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                st.push(String.valueOf(ch));
+            }
+            else{
+                String b=st.pop();
+                String a=st.pop();
+                String temp=ch+a+b;
+                st.push(temp);
+            }
+            i++;
+        }
+        return st.peek();
+    }
+}
+
+
+
+
+
+
+Prefix to Postfix Conversion
+You are given a string that represents the prefix form of a valid mathematical expression. Convert it to its postfix form.
+
+Example:
+
+Input: 
+*-A/BC-/AKL
+Output: 
+ABC/-AK/L-*
+Explanation: 
+The above output is its valid postfix form.
+
+
+
+
+// User function Template for Java
+
+class Solution {
+    static String preToPost(String pre_exp) {
+        // code here
+        Stack<String> st=new Stack<>();
+        int i=pre_exp.length()-1;
+        while(i>=0){
+            char ch=pre_exp.charAt(i);
+            if(Character.isLetterOrDigit(ch)){
+                st.push(String.valueOf(ch));
+            }
+            else{
+                String a=st.pop();
+                String b=st.pop();
+                String temp=a+b+ch;
+                st.push(temp);
+            }
+            i--;
+        }
+        return st.peek();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+496. Next Greater Element I
+
+The next greater element of some element x in an array is the first greater element that is to the right of x in the same array.
+
+You are given two distinct 0-indexed integer arrays nums1 and nums2, where nums1 is a subset of nums2.
+
+For each 0 <= i < nums1.length, find the index j such that nums1[i] == nums2[j] and determine the next greater element of nums2[j] in nums2. If there is no next greater element, then the answer for this query is -1.
+
+Return an array ans of length nums1.length such that ans[i] is the next greater element as described above.
+
+ 
+
+Example 1:
+
+Input: nums1 = [4,1,2], nums2 = [1,3,4,2]
+Output: [-1,3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 4 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+- 1 is underlined in nums2 = [1,3,4,2]. The next greater element is 3.
+- 2 is underlined in nums2 = [1,3,4,2]. There is no next greater element, so the answer is -1.
+Example 2:
+
+Input: nums1 = [2,4], nums2 = [1,2,3,4]
+Output: [3,-1]
+Explanation: The next greater element for each value of nums1 is as follows:
+- 2 is underlined in nums2 = [1,2,3,4]. The next greater element is 3.
+- 4 is underlined in nums2 = [1,2,3,4]. There is no next greater element, so the answer is -1.
+ 
+
+Constraints:
+
+1 <= nums1.length <= nums2.length <= 1000
+0 <= nums1[i], nums2[i] <= 104
+All integers in nums1 and nums2 are unique.
+All the integers of nums1 also appear in nums2.
+ 
+
+
+import java.util.*;
+
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int n = nums2.length;
+        int next[] = new int[n];
+        Stack<Integer> st = new Stack<>();
+
+        next[n - 1] = -1;
+        st.push(nums2[n - 1]);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(nums2[n-1],-1);
+        for (int i = n - 2; i >= 0; i--) {
+            while (!st.isEmpty() && st.peek() <= nums2[i]) {
+                st.pop();
+            }
+            next[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(nums2[i]);
+            map.put(nums2[i], next[i]);
+        }
+
+
+        int ans[] = new int[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            ans[i] = map.get(nums1[i]);
+        }
+
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+503. Next Greater Element II
+
+Given a circular integer array nums (i.e., the next element of nums[nums.length - 1] is nums[0]), return the next greater number for every element in nums.
+
+The next greater number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, return -1 for this number.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,1]
+Output: [2,-1,2]
+Explanation: The first 1's next greater number is 2; 
+The number 2 can't find next greater number. 
+The second 1's next greater number needs to search circularly, which is also 2.
+Example 2:
+
+Input: nums = [1,2,3,4,3]
+Output: [2,3,4,-1,4]
+
+
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n=nums.length;
+        Stack<Integer> st=new Stack<>();
+        for(int i=n-1;i>=0;i--){
+            st.push(nums[i]);
+        }
+        int ans[]=new int[n];
+        for(int i=n-1;i>=0;i--){
+            while(!st.isEmpty() && st.peek()<=nums[i]){
+                st.pop();
+            }
+            ans[i]=(st.isEmpty()?-1:st.peek());
+            st.push(nums[i]);
+        }
+        return ans;
+    }
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Next Smaller Element
+
+You are given an integer array arr[ ]. For every element in the array, your task is to determine its Next Smaller Element (NSE).
+
+
+The Next Smaller Element (NSE) of an element x is the first element that appears to the right of x in the array and is strictly smaller than x.
+
+If no such element exists, assign -1 as the NSE for that position.
+Examples:
+
+Input: arr[] = [4, 8, 5, 2, 25]
+Output: [2, 5, 2, -1, -1]
+Explanation: 
+The first element smaller than 4 having index > 0 is 2.
+The first element smaller than 8 having index > 1 is 5.
+The first element smaller than 5 having index > 2 is 2.
+There are no elements smaller than 4 having index > 3.
+There are no elements smaller than 4 having index > 4.
+Input: arr[] = [13, 7, 6, 12]
+Output: [7, 6, -1, -1]
+Explanation:
+The first element smaller than 13 having index > 0 is 7.
+The first element smaller than 7 having index > 1 is 6.
+There are no elements smaller than 6 having index > 2.
+There are no elements smaller than 12 having index > 3.
+
+Input: arr[] = [4, 1]
+Output: [1, -1]
+Explanation: 4 will be updated to 1 and 1 will be updated to -1.
+
+
+class Solution {
+    static ArrayList<Integer> nextSmallerEle(int[] arr) {
+        // code here
+        ArrayList<Integer> ans=new ArrayList<>();
+        ans.add(-1);
+        Stack<Integer> st=new Stack<>();
+        int n=arr.length;
+        st.push(arr[n-1]);
+        for(int i=n-2;i>=0;i--){
+            while(!st.isEmpty()  && st.peek()>=arr[i]){
+                st.pop();
+            }
+            if(st.isEmpty()){
+                ans.add(0,-1);
+            }
+            else{
+                ans.add(0,st.peek());
+            }
+            st.push(arr[i]);
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Number of greater elements to the right
+
+Given an array of arr[] and Q queries of indices. For each query indices[i], determine the count of elements in arr that are strictly greater than arr[indices[i]] to its right (after the position indices[i]).
+
+Examples :
+
+Input: arr[] = [3, 4, 2, 7, 5, 8, 10, 6], queries = 2, indices[] = [0, 5]
+Output:  [6, 1]
+Explanation: The next greater elements to the right of 3(index 0) are 4,7,5,8,10,6. The next greater elements to the right of 8(index 5) is only 10.
+Input: arr[] = [1, 2, 3, 4, 1], queries = 2, indices[] = [0, 3]
+Output:  [3, 0]
+Explanation: The count of numbers to the right of index 0 which are greater than arr[0] is 3 i.e. (2, 3, 4). Similarly, the count of numbers to the right of index 3 which are greater than arr[3] is 0, since there are no greater elements than 4 to the right of the array.
+
+class Solution {
+    public static int[] count_NGE(int arr[], int indices[]) {
+        // code here
+        int n=indices.length;
+        int j=0;
+        int[] ans=new int[n];
+         for(int num :indices){
+             int a=arr[num];
+             int count=0;
+             for(int i=num+1;i<arr.length;i++){
+                 if(arr[i]>a){
+                     count++;
+                 }
+             }
+             ans[j++]=count;
+         }
+         return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+42. Trapping Rain Water
+
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+ 
+
+Example 1:
+
+
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+Example 2:
+
+Input: height = [4,2,0,3,2,5]
+Output: 9
+class Solution {
+    public int trap(int[] height) {
+        int total=0;
+        int lmax=0;
+        int rmax=0;
+        int l=0;
+        int n=height.length;
+        int r=n-1;
+        while(l<r){
+            if(height[l]<=height[r]){
+                if(lmax>height[l]){
+                    total+=lmax-height[l];
+                }
+                else{
+                    lmax=height[l];
+                }
+                l++;
+            }
+            else{
+                if(rmax>height[r]){
+                    total+=rmax-height[r];
+                }
+                else{
+                    rmax=height[r];
+                }
+                r--;
+            }
+        }
+        return total;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sum of subarray minimums
+
+Given an array arr[] of positive integers, find the total sum of the minimum elements of every possible subarrays.
+
+Note: It is guaranteed that the total sum will fit within a 32-bit unsigned integer.
+
+Examples:
+
+Input: arr[] = [10, 20]
+Output: 40
+Explanation: Subarrays are [10], [20], [10, 20]. Minimums are 10, 20, 10.
+Sum of all these is 40.
+Input: arr[] = [1, 2, 3, 4]
+Output: 20
+Explanation: Subarrays are [1], [2], [3], [4], [1, 2], [1, 2, 3], [1, 2, 3, 4], [2, 3], [2, 3, 4], [3, 4]. Minimums are 1, 2, 3, 4, 1, 1, 1, 2, 2, 3.
+Sum of all these is 20.
+import java.util.*;
+
+class Solution {
+    public int sumSubMins(int[] arr) {
+        int n = arr.length;
+
+        int[] nextSmaller = new int[n];
+        int[] prevSmaller = new int[n];
+
+        Stack<Integer> st = new Stack<>();
+
+        for(int i = n - 1; i >= 0; i--) {
+            while(!st.isEmpty() && arr[st.peek()] > arr[i]) {
+                st.pop();
+            }
+            nextSmaller[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+
+        st.clear();
+
+        for(int i = 0; i < n; i++) {
+            while(!st.isEmpty() && arr[st.peek()] >= arr[i]) {
+                st.pop();
+            }
+            prevSmaller[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+
+        long sum = 0;
+        int mod = 1000000007;
+
+        for(int i = 0; i < n; i++) {
+            long left = i - prevSmaller[i];
+            long right = nextSmaller[i] - i;
+
+            sum = (sum + arr[i] * left * right) % mod;
+        }
+
+        return (int)sum;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+735. Asteroid Collision
+
+We are given an array asteroids of integers representing asteroids in a row. The indices of the asteroid in the array represent their relative position in space.
+
+For each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.
+
+Find out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.
+
+ 
+
+Example 1:
+
+Input: asteroids = [5,10,-5]
+Output: [5,10]
+Explanation: The 10 and -5 collide resulting in 10. The 5 and 10 never collide.
+Example 2:
+
+Input: asteroids = [8,-8]
+Output: []
+Explanation: The 8 and -8 collide exploding each other.
+Example 3:
+
+Input: asteroids = [10,2,-5]
+Output: [10]
+Explanation: The 2 and -5 collide resulting in -5. The 10 and -5 collide resulting in 10.
+Example 4:
+
+Input: asteroids = [3,5,-6,2,-1,4]​​​​​​​
+Output: [-6,2,4]
+Explanation: The asteroid -6 makes the asteroid 3 and 5 explode, and then continues going left. On the other side, the asteroid 2 makes the asteroid -1 explode and then continues going right, without reaching asteroid 4.
+
+
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<int[]> st = new Stack<>();
+        int n = asteroids.length;
+
+        for (int i = 0; i < n; i++) {
+            int cur = asteroids[i];
+            int dir = cur < 0 ? -1 : 1;
+            int ins = 1;
+
+            while (!st.isEmpty() && st.peek()[0] > 0 && cur < 0) {
+
+                if (st.peek()[0] < Math.abs(cur)) {
+                    st.pop(); 
+                    continue;
+                } 
+                else if (st.peek()[0] > Math.abs(cur)) {
+                    ins = 0;
+                    break;
+                } 
+                else { 
+                    st.pop();
+                    ins = 0;
+                    break;
+                }
+            }
+
+            if (ins == 1)
+                st.push(new int[] { cur, dir }); 
+        }
+
+        n = st.size();
+        int res[] = new int[n];
+
+        for (int i = n - 1; i >= 0; i--) {
+            res[i] = st.pop()[0];
+        }
+
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2104. Sum of Subarray Ranges
+
+You are given an integer array nums. The range of a subarray of nums is the difference between the largest and smallest element in the subarray.
+
+Return the sum of all subarray ranges of nums.
+
+A subarray is a contiguous non-empty sequence of elements within an array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: 4
+Explanation: The 6 subarrays of nums are the following:
+[1], range = largest - smallest = 1 - 1 = 0 
+[2], range = 2 - 2 = 0
+[3], range = 3 - 3 = 0
+[1,2], range = 2 - 1 = 1
+[2,3], range = 3 - 2 = 1
+[1,2,3], range = 3 - 1 = 2
+So the sum of all ranges is 0 + 0 + 0 + 1 + 1 + 2 = 4.
+Example 2:
+
+Input: nums = [1,3,3]
+Output: 4
+Explanation: The 6 subarrays of nums are the following:
+[1], range = largest - smallest = 1 - 1 = 0
+[3], range = 3 - 3 = 0
+[3], range = 3 - 3 = 0
+[1,3], range = 3 - 1 = 2
+[3,3], range = 3 - 3 = 0
+[1,3,3], range = 3 - 1 = 2
+So the sum of all ranges is 0 + 0 + 0 + 2 + 0 + 2 = 4.
+Example 3:
+
+Input: nums = [4,-2,-3,4,1]
+Output: 59
+Explanation: The sum of all subarray ranges of nums is 59.
+
+import java.util.*;
+
+class Solution {
+
+    public void findNS(int[] nums, int[] ns, int n) {
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && nums[st.peek()] > nums[i]) {
+                st.pop();
+            }
+            ns[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+    }
+
+    public void findPS(int[] nums, int[] ps, int n) {
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && nums[st.peek()] >= nums[i]) {
+                st.pop();
+            }
+            ps[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+    }
+
+    public void findNG(int[] nums, int[] ng, int n) {
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = n - 1; i >= 0; i--) {
+            while (!st.isEmpty() && nums[st.peek()] < nums[i]) {
+                st.pop();
+            }
+            ng[i] = st.isEmpty() ? n : st.peek();
+            st.push(i);
+        }
+    }
+
+    public void findPG(int[] nums, int[] pg, int n) {
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && nums[st.peek()] <= nums[i]) {
+                st.pop();
+            }
+            pg[i] = st.isEmpty() ? -1 : st.peek();
+            st.push(i);
+        }
+    }
+
+    public long subArrayRanges(int[] nums) {
+        int n = nums.length;
+
+        int[] ns = new int[n];
+        int[] ps = new int[n];
+        int[] ng = new int[n];
+        int[] pg = new int[n];
+
+        findNS(nums, ns, n);
+        findPS(nums, ps, n);
+        findNG(nums, ng, n);
+        findPG(nums, pg, n);
+
+        long total = 0;
+
+        for (int i = 0; i < n; i++) {
+            long min = (long)(i - ps[i]) * (ns[i] - i);
+            long max = (long)(i - pg[i]) * (ng[i] - i);
+
+            total += (max - min) * nums[i];
+        }
+
+        return total;
+    }
+}
+
+// You can use <= (or >=) on either side, BUT:
+
+// ⚠️ You must use it on only one side (either previous OR next), not both.
+
+// 🎯 Why?
+
+// Because of duplicate elements.
+
+// If you use the same strictness on both sides:
+
+// duplicates get counted twice ❌
+// or missed ❌
+
+
+
+
+
+
+
+
+
+
+
+
+
+402. Remove K Digits
+Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+ 
+
+Example 1:
+
+Input: num = "1432219", k = 3
+Output: "1219"
+Explanation: Remove the three digits 4, 3, and 2 to form the new number 1219 which is the smallest.
+Example 2:
+
+Input: num = "10200", k = 1
+Output: "200"
+Explanation: Remove the leading 1 and the number is 200. Note that the output must not contain leading zeroes.
+Example 3:
+
+Input: num = "10", k = 2
+Output: "0"
+Explanation: Remove all the digits from the number and it is left with nothing which is 0.
+ class Solution {
+    public String removeKdigits(String num, int k) {
+        Stack<Character> stack=new Stack<>();
+        for(char ch :num.toCharArray()){
+            while(!stack.isEmpty() && k>0 && stack.peek()>ch){
+                stack.pop();
+                k--;
+            }
+            stack.push(ch);
+        }
+        while(k>0 && !stack.isEmpty() ){
+            stack.pop();
+            k--;
+        }
+        Stack<Character> stack1=new Stack<>();
+
+        while(!stack.isEmpty()){
+            stack1.push(stack.pop());
+        }
+        StringBuilder ans=new StringBuilder();
+        while(!stack1.isEmpty()){
+            ans.append(stack1.pop());
+        }
+        while(ans.length()>0 && ans.charAt(0)=='0'){
+            ans.deleteCharAt(0);
+        }
+        return ans.length() == 0 ? "0" : ans.toString();
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+84. Largest Rectangle in Histogram
+
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+ 
+
+Example 1:
+
+
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+Example 2:
+
+
+Input: heights = [2,4]
+Output: 4
+
+
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+      Stack<Integer> st=new Stack<>();
+      int n=heights.length;
+      int area=0;
+      for(int i=0;i<=n;i++){
+        int h=(n==i)?0:heights[i];
+        while(!st.isEmpty()  && heights[st.peek()]>h){
+            int hei=heights[st.pop()];
+            int wid=(st.isEmpty())?i:(i-st.peek()-1);
+            area=Math.max(area,hei*wid);
+        }
+        st.push(i);
+      }
+      return area;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+The Celebrity Problem
+A celebrity is a person who is known to all but does not know anyone at a party. A party is being organized by some people. A square matrix mat[][] of size n*n is used to represent people at the party such that if an element of row i and column j is set to 1 it means ith person knows jth person. You need to return the index of the celebrity in the party, if the celebrity does not exist, return -1.
+
+Note: Follow 0-based indexing.
+
+Examples:
+
+Input: mat[][] = [[1, 1, 0],
+                [0, 1, 0],
+                [0, 1, 1]]
+Output: 1
+Explanation: 0th and 2nd person both know 1st person and 1st person does not know anyone. Therefore, 1 is the celebrity person.
+Input: mat[][] = [[1, 1], 
+                [1, 1]]
+Output: -1
+Explanation: Since both the people at the party know each other. Hence none of them is a celebrity person.
+Input: mat[][] = [[1]]
+Output: 0
+class Solution {
+    public int celebrity(int mat[][]) {
+        int n = mat.length;
+        int top = 0;
+        int bot = n - 1;
+
+        while (top < bot) {
+            if (mat[top][bot] == 1) {
+                top++;
+            } else if (mat[bot][top] == 1) {
+                bot--;
+            } else {
+                top++;
+                bot--;
+            }
+        }
+
+        int candidate = top;
+
+        // Verification
+        for (int i = 0; i < n; i++) {
+            if (i == candidate) continue;
+
+            if (mat[candidate][i] == 1 || mat[i][candidate] == 0) {
+                return -1;
+            }
+        }
+
+        return candidate;
+    }
+}
+
+
+
+
+
+
+
+
+
+85. Maximal Rectangle
+
+Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+ 
+
+Example 1:
+
+
+Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+Output: 6
+Explanation: The maximal rectangle is shown in the above picture.
+Example 2:
+
+Input: matrix = [["0"]]
+Output: 0
+Example 3:
+
+Input: matrix = [["1"]]
+Output: 1
+class Solution {
+    public int largestarea(int[] heigth) {
+        Stack<Integer> stack = new Stack<>();
+        int n = heigth.length;
+        int maxarea = 0;
+        for (int i = 0; i <= n; i++) {
+            int h = (n == i) ? 0 : heigth[i];
+            while (!stack.isEmpty() && heigth[stack.peek()] > h) {
+                int hei = heigth[stack.pop()];
+                int width = stack.isEmpty() ? i : (i - stack.peek() - 1);
+                maxarea = Math.max(maxarea, hei * width);
+            }
+            stack.push(i);
+        }
+        return maxarea;
+    }
+
+    public int maximalRectangle(char[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int maxarea = 0;
+        if (m == 0 || matrix == null)
+            return 0;
+        int heigth[] = new int[n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+
+                if (matrix[i][j] == '1')
+                    heigth[j]++;
+                else
+                    heigth[j] = 0;
+            }
+            maxarea = Math.max(maxarea, largestarea(heigth));
+        }
+        return maxarea;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+239. Sliding Window Maximum
+
+You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+Return the max sliding window.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
+Output: [3,3,5,5,6,7]
+Explanation: 
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+Example 2:
+
+Input: nums = [1], k = 1
+Output: [1]
+ 
+
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if(k==1){
+            return nums;
+        }
+        int l=nums.length;
+        int ans[]=new int[l-k+1];
+        Deque<Integer> deq=new LinkedList<>();
+        for(int i=0;i<l;i++){
+            if(!deq.isEmpty() && deq.peekFirst()<i-k+1){
+                deq.pollFirst();
+            }
+            while(!deq.isEmpty() && nums[deq.peekLast()]<=nums[i]){
+                deq.pollLast();
+            }
+            deq.addLast(i);
+            if(i>=k-1){
+                ans[i-k+1]=nums[deq.peekFirst()];
+            }
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+901. Online Stock Span
+
+Design an algorithm that collects daily price quotes for some stock and returns the span of that stock's price for the current day.
+
+The span of the stock's price in one day is the maximum number of consecutive days (starting from that day and going backward) for which the stock price was less than or equal to the price of that day.
+
+For example, if the prices of the stock in the last four days is [7,2,1,2] and the price of the stock today is 2, then the span of today is 4 because starting from today, the price of the stock was less than or equal 2 for 4 consecutive days.
+Also, if the prices of the stock in the last four days is [7,34,1,2] and the price of the stock today is 8, then the span of today is 3 because starting from today, the price of the stock was less than or equal 8 for 3 consecutive days.
+Implement the StockSpanner class:
+
+StockSpanner() Initializes the object of the class.
+int next(int price) Returns the span of the stock's price given that today's price is price.
+ 
+
+Example 1:
+
+Input
+["StockSpanner", "next", "next", "next", "next", "next", "next", "next"]
+[[], [100], [80], [60], [70], [60], [75], [85]]
+Output
+[null, 1, 1, 1, 2, 1, 4, 6]
+
+Explanation
+StockSpanner stockSpanner = new StockSpanner();
+stockSpanner.next(100); // return 1
+stockSpanner.next(80);  // return 1
+stockSpanner.next(60);  // return 1
+stockSpanner.next(70);  // return 2
+stockSpanner.next(60);  // return 1
+stockSpanner.next(75);  // return 4, because the last 4 prices (including today's price of 75) were less than or equal to today's price.
+stockSpanner.next(85);  // return 6
+
+
+
+
+
+class StockSpanner {
+    Stack<int[]> stack;
+    public StockSpanner() {
+        stack=new Stack<>();
+    }
+    public int next(int price) {
+        int a=1;
+        while(!stack.isEmpty() && stack.peek()[0]<=price){
+            a+=stack.pop()[1];
+        }
+        stack.push(new int[]{price,a});
+        return a;
+    }
+
+}
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner obj = new StockSpanner();
+ * int param_1 = obj.next(price);
+ */
+
+
+
+
+
+
+146. LRU Cache
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+Implement the LRUCache class:
+
+LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+int get(int key) Return the value of the key if the key exists, otherwise return -1.
+void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+The functions get and put must each run in O(1) average time complexity.
+
+ 
+
+Example 1:
+
+Input
+["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+[[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+Output
+[null, null, null, 1, null, -1, null, -1, 3, 4]
+
+Explanation
+LRUCache lRUCache = new LRUCache(2);
+lRUCache.put(1, 1); // cache is {1=1}
+lRUCache.put(2, 2); // cache is {1=1, 2=2}
+lRUCache.get(1);    // return 1
+lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+lRUCache.get(2);    // returns -1 (not found)
+lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+lRUCache.get(1);    // return -1 (not found)
+lRUCache.get(3);    // return 3
+lRUCache.get(4);    // return 4
+
+
+
+
+
+class LRUCache {
+    private final int capacity;
+    private final Map<Integer, int[]> cache;
+    private final Deque<int[]> deque; 
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.cache = new HashMap<>(capacity);
+        this.deque = new ArrayDeque<>(capacity);
+    }
+
+    public int get(int key) {
+        if (!cache.containsKey(key)) return -1; 
+
+        int[] entry = cache.get(key); 
+        deque.remove(entry); 
+        deque.addLast(entry);
+        return entry[1];
+    }
+
+    public void put(int key, int value) {
+        if (cache.containsKey(key)) {
+            int[] entry = cache.get(key);
+            entry[1] = value;
+            deque.remove(entry);
+            deque.addLast(entry);
+        } else {
+            if (cache.size() >= capacity) {
+                int[] lru = deque.pollFirst();
+                cache.remove(lru[0]);
+            }
+            int[] newEntry = new int[]{key, value};
+            cache.put(key, newEntry);
+            deque.addLast(newEntry);
+        }
+    }
+}

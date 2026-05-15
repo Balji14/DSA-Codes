@@ -1,0 +1,1250 @@
+class TreeNode{
+    int data;
+    TreeNode right;
+    TreeNode left;
+    TreeNode(int n){
+        this.data=n;
+        this.left=this.right=null;
+    }
+}
+class Tree{
+    Scanner sc=new Scanner(System.in);
+     TreeNode createTree(TreeNode root){
+        System.out.println("enter data of data(-1 to stop)");
+        int data;
+        data=sc.nextInt();
+        if(data==-1){
+            return null;
+        }
+        root=new TreeNode(data);
+        System.out.println("enter data for insertion to  left of data:"+data);
+        root.left=createTree(root.left);
+        System.out.println("enter data for insertion to  right of data : "+data);
+        root.right=createTree(root.right);
+        return root;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+144. Binary Tree Preorder Traversal
+
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+ 
+
+Example 1:
+
+Input: root = [1,null,2,3]
+
+Output: [1,2,3]
+
+Explanation:
+
+
+
+Example 2:
+
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+
+Output: [1,2,4,5,6,7,3,8,9]
+
+Explanation:
+
+
+
+Example 3:
+
+Input: root = []
+
+Output: []
+
+Example 4:
+
+Input: root = [1]
+
+Output: [1]
+
+
+
+class Solution {
+   /* public void preorder(TreeNode root,List<Integer> res){
+        if(root==null)  return ;
+        res.add(root.val);
+        preorder(root.left,res);
+        preorder(root.right,res);
+    }
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        preorder(root,res);
+        return res;
+    }*/
+    /*public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        Stack<TreeNode> stack=new Stack<>();
+        if(root==null)  return res;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode temp=stack.pop();
+            res.add(temp.val);
+            if(temp.right!=null)
+                stack.add(temp.right);
+            if(temp.left!=null)
+                stack.add(temp.left);
+        }
+        return res;
+    }*/
+//morris preorder traversal
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        if(root==null){
+            return res;
+        }
+        TreeNode cur=root;
+        while(cur!=null){
+            if(cur.left==null){
+                res.add(cur.val);
+                cur=cur.right;
+            }
+            else{
+                TreeNode rightMost=cur.left;
+                while(rightMost.right!=null && rightMost.right!=cur){
+                    rightMost=rightMost.right;
+                }
+                if(rightMost.right==null){
+                    res.add(cur.val);
+                    rightMost.right=cur;
+                    cur=cur.left;
+                }
+                else{
+                    rightMost.right=null;
+                    cur=cur.right;
+                }
+            }
+        
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+94. Binary Tree Inorder Traversal
+
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+ 
+
+Example 1:
+
+Input: root = [1,null,2,3]
+
+Output: [1,3,2]
+
+Explanation:
+
+
+
+Example 2:
+
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+
+Output: [4,2,6,5,7,1,3,9,8]
+
+Explanation:
+
+
+
+Example 3:
+
+Input: root = []
+
+Output: []
+
+Example 4:
+
+Input: root = [1]
+
+Output: [1]
+
+ /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() 
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /*List<Integer> res=new ArrayList<>();
+
+    public void inorder(TreeNode root){
+        if(root==null)  return ;
+        inorder(root.left);
+        res.add(root.val);
+        inorder(root.right);
+    }
+        
+    public List<Integer> inorderTraversal(TreeNode root) {
+        inorder(root);
+        return res;
+    }*/
+   /* public1List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        Stack<TreeNode> stack=new Stack<>();
+        TreeNode temp=root;
+        while(temp!=null || !stack.isEmpty()){
+            while(temp!=null){
+                stack.push(temp);
+                temp=temp.left;
+            }
+            temp=stack.pop();
+            res.add(temp.val);
+            temp=temp.right;
+        }
+        return res;
+    }*/
+
+
+//morris inoordertraversal
+     public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        if(root==null)
+            return res;
+        TreeNode cur=root;
+        while(cur!=null){
+            if(cur.left==null){
+                res.add(cur.val);
+                cur=cur.right;
+            }
+            else{
+                TreeNode rightMost=cur.left;
+                while(rightMost.right!=null && rightMost.right!=cur){
+                    rightMost=rightMost.right;
+                }
+                if(rightMost.right==null){
+                    rightMost.right=cur;
+                    cur=cur.left;
+                }
+                else{
+                    res.add(cur.val);
+                    rightMost.right=null;
+                    cur=cur.right;
+                }
+            }
+        }
+        return res;
+     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+145. Binary Tree Postorder Traversal
+
+Given the root of a binary tree, return the postorder traversal of its nodes' values.
+
+ 
+
+Example 1:
+
+Input: root = [1,null,2,3]
+
+Output: [3,2,1]
+
+Explanation:
+
+
+
+Example 2:
+
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+
+Output: [4,6,7,5,2,9,8,3,1]
+
+Explanation:
+
+
+
+Example 3:
+
+Input: root = []
+
+Output: []
+
+Example 4:
+
+Input: root = [1]
+
+Output: [1]
+
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+     /*public void postorder(TreeNode root,List<Integer> res){
+        if(root==null)  return ;
+        
+        postorder(root.left,res);
+        postorder(root.right,res);
+        res.add(root.val);
+    }
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        postorder(root,res);
+        return res;
+    }*/
+   /* public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        Stack<TreeNode> stack=new Stack<>();
+        if(root==null)  return res;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode temp=stack.pop();
+             res.add(0,temp.val);
+            if(temp.left!=null)
+                stack.add(temp.left);
+            
+            if(temp.right!=null)
+                stack.add(temp.right);
+            
+         
+        }
+        return res;
+    }*/
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        Stack<TreeNode> stack1=new Stack<>();
+        Stack<TreeNode> stack2=new Stack<>();
+
+        if(root==null)  return res;
+        stack1.push(root);
+
+        while(!stack1.isEmpty()){
+            TreeNode temp=stack1.pop();
+            stack2.push(temp);
+            if(temp.left!=null){
+                stack1.push(temp.left);
+            }
+            if(temp.right!=null)
+                stack1.push(temp.right);
+        }
+        while(!stack2.isEmpty()){
+            res.add(stack2.pop().val);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+102. Binary Tree Level Order Traversal
+
+Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[9,20],[15,7]]
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+Example 3:
+
+Input: root = []
+Output: []
+ 
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res=new ArrayList<>();
+        if(root==null)  return res;
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            List<Integer> level=new ArrayList<>();
+            int size=queue.size();
+            for(int i=0;i<size;i++){
+                TreeNode temp=queue.poll();
+                level.add(temp.val);
+                if(temp.left!=null) 
+                    queue.add(temp.left);
+                if(temp.right!=null)
+                    queue.add(temp.right);
+            }
+            res.add(level);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+104. Maximum Depth of Binary Tree
+Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: 3
+Example 2:
+
+Input: root = [1,null,2]
+Output: 2
+ 
+
+class Solution {
+    public int solve(TreeNode root){
+        if(root==null)  return 0;
+        int l=0;
+        int r=0;
+        if(root.left!=null)
+            l=1+solve(root.left);
+        if(root.right!=null)
+            r=1+solve(root.right);
+        return Math.max(l,r);
+        
+        
+    }
+    public int maxDepth(TreeNode root) {
+        if(root==null)
+            return 0;
+        return 1+solve(root);
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+110. Balanced Binary Tree
+
+Given a binary tree, determine if it is height-balanced.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: true
+Example 2:
+
+
+Input: root = [1,2,2,3,3,null,null,4,4]
+Output: false
+Example 3:
+
+Input: root = []
+Output: true
+
+class Solution {
+    public int  solve(TreeNode root){
+        if(root==null)  return 0;
+
+        int left=solve(root.left);
+        if(left==-1)    return -1;
+
+        int right=solve(root.right);
+        if(right==-1)   return -1;
+
+        if(Math.abs(left-right)>1)
+            return -1;
+        return 1+Math.max(left,right);
+    }
+    public boolean isBalanced(TreeNode root) {
+        if(root==null)
+            return true;
+        int res=solve(root);
+        return res!=-1;
+
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+543. Diameter of Binary Tree
+
+Given the root of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,4,5]
+Output: 3
+Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].
+Example 2:
+
+Input: root = [1,2]
+Output: 1
+
+class Solution {
+
+    int ans = 0;
+
+    public int solve(TreeNode root) {
+
+        int l = 0;
+        int r = 0;
+
+        if(root.left != null)
+            l = 1 + solve(root.left);
+
+        if(root.right != null)
+            r = 1 + solve(root.right);
+
+        ans = Math.max(ans, l + r);
+
+        return Math.max(l, r);
+    }
+
+    public int diameterOfBinaryTree(TreeNode root) {
+
+        solve(root);
+
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+124. Binary Tree Maximum Path Sum
+
+A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.
+
+The path sum of a path is the sum of the node's values in the path.
+
+Given the root of a binary tree, return the maximum path sum of any non-empty path.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3]
+Output: 6
+Explanation: The optimal path is 2 -> 1 -> 3 with a path sum of 2 + 1 + 3 = 6.
+Example 2:
+
+
+Input: root = [-10,9,20,null,null,15,7]
+Output: 42
+Explanation: The optimal path is 15 -> 20 -> 7 with a path sum of 15 + 20 + 7 = 42.
+
+class Solution {
+
+    int sum = Integer.MIN_VALUE;
+
+    public int solve(TreeNode root) {
+
+        if(root == null)
+            return 0;
+
+        int l = 0;
+        int r = 0;
+
+        if(root.left != null)
+            l = solve(root.left);
+
+        if(root.right != null)
+            r = solve(root.right);
+
+        l = Math.max(0, l);
+        r = Math.max(0, r);
+
+        sum = Math.max(sum, l + r + root.val);
+
+        return root.val + Math.max(l, r);
+    }
+
+    public int maxPathSum(TreeNode root) {
+
+        solve(root);
+
+        return sum;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+100. Same Tree
+
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+ 
+
+Example 1:
+
+
+Input: p = [1,2,3], q = [1,2,3]
+Output: true
+Example 2:
+
+
+Input: p = [1,2], q = [1,null,2]
+Output: false
+Example 3:
+
+
+Input: p = [1,2,1], q = [1,1,2]
+Output: false
+class Solution {
+    public boolean solve(TreeNode p, TreeNode q){
+        if(p==null && q==null)  return true;
+        if(p==null || q==null)
+            return false;
+        if(p.val!=q.val )   return false;
+        return solve(p.left,q.left) && solve(p.right,q.right);
+
+    }
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        return solve(p,q);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+103. Binary Tree Zigzag Level Order Traversal
+Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[3],[20,9],[15,7]]
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+Example 3:
+
+Input: root = []
+Output: []
+
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null)
+            return ans;
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.add(root);
+        boolean lefttoright=true;
+        while(!queue.isEmpty()){
+            List<Integer> res=new ArrayList<>();
+            int size=queue.size();
+            for(int i=0;i<size;i++){
+                TreeNode temp=queue.poll();
+                if(lefttoright)
+                    res.add(temp.val);
+                else
+                    res.add(0,temp.val);
+                if(temp.left!=null)
+                    queue.add(temp.left);
+                if(temp.right!=null)
+                    queue.add(temp.right);
+
+            }
+            ans.add(res);
+            lefttoright=!lefttoright;
+        }
+        return ans;
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Tree Boundary Traversal
+Given a root of a Binary Tree, return its boundary traversal in the following order:
+
+Left Boundary: Nodes from the root to the leftmost non-leaf node, preferring the left child over the right and excluding leaves.
+
+Leaf Nodes: All leaf nodes from left to right, covering every leaf in the tree.
+
+Reverse Right Boundary: Nodes from the root to the rightmost non-leaf node, preferring the right child over the left, excluding leaves, and added in reverse order.
+
+Note: The root is included once, leaves are added separately to avoid repetition, and the right boundary follows traversal preference not the path from the rightmost leaf.
+
+Examples:
+
+Input: root = [1, 2, 3, 4, 5, 6, 7, N, N, 8, 9, N, N, N, N]
+Output: [1, 2, 4, 8, 9, 6, 7, 3]
+Explanation:
+
+Input: root = [1, N, 2, N, 3, N, 4, N, N] 
+Output: [1, 4, 3, 2]
+Explanation:
+
+Left boundary: [1] (as there is no left subtree)
+Leaf nodes: [4]
+Right boundary: [3, 2] (in reverse order)
+Final traversal: [1, 4, 3, 2]
+
+/*
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int d) {
+        data = d;
+        left = right = null;
+    }
+}
+*/
+
+class Solution {
+    boolean isLeaf(Node root){
+        return root.left==null && root.right==null;
+    }
+    void findLeftBoundary(ArrayList<Integer> res,Node root){
+        while(root!=null){
+            if(!isLeaf(root))
+                res.add(root.data);
+            if(root.left!=null)
+                root=root.left;
+            else
+                root=root.right;
+        }
+    }
+    void findLeafs( ArrayList<Integer> res,Node root){
+        if(root==null)  return;
+        
+        if(isLeaf(root))
+            res.add(root.data);
+        findLeafs(res,root.left);
+        findLeafs(res,root.right);
+       
+    }
+    void findRightBoundary(ArrayList<Integer> res,Node root){
+        Stack<Integer> s=new Stack<>();
+        while(root!=null){
+            if(!isLeaf(root))
+                s.push(root.data);
+            if(root.right!=null)
+                root=root.right;
+            else
+                root=root.left;
+        }
+        while(!s.isEmpty()){
+            res.add(s.pop());
+        }
+    }
+    ArrayList<Integer> boundaryTraversal(Node root) {
+        // code here
+        ArrayList<Integer> res=new ArrayList<>();
+        
+        if(root==null)  return res;
+        if(!isLeaf(root))
+            res.add(root.data);
+        findLeftBoundary(res,root.left);
+        findLeafs(res,root);
+        findRightBoundary(res,root.right);
+        returno res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+987. Vertical Order Traversal of a Binary Tree
+
+Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+
+Return the vertical order traversal of the binary tree.
+
+ 
+
+Example 1:
+
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+Column -1: Only node 9 is in this column.
+Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+Column 1: Only node 20 is in this column.
+Column 2: Only node 7 is in this column.
+Example 2:
+
+
+Input: root = [1,2,3,4,5,6,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+Column -2: Only node 4 is in this column.
+Column -1: Only node 2 is in this column.
+Column 0: Nodes 1, 5, and 6 are in this column.
+          1 is at the top, so it comes first.
+          5 and 6 are at the same position (2, 0), so we order them by their value, 5 before 6.
+Column 1: Only node 3 is in this column.
+Column 2: Only node 7 is in this column.
+Example 3:
+
+
+Input: root = [1,2,3,4,6,5,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+This case is the exact same as example 2, but with nodes 5 and 6 swapped.
+Note that the solution remains the same since 5 and 6 are in the same location and should be ordered by their values.
+
+class newNode{
+        TreeNode node;
+        int row;
+        int col;
+        public newNode(TreeNode node,int row,int col){
+            this.node=node;
+            this.row=row;
+            this.col=col;
+        }  
+}
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> res=new ArrayList<>();
+        if(root==null)
+            return res;
+        TreeMap<Integer,TreeMap<Integer,PriorityQueue<Integer>>> map=new TreeMap();
+        Queue<newNode> q=new LinkedList<>();
+        q.offer(new newNode(root,0,0));
+        while(!q.isEmpty()){
+            newNode top=q.poll();
+            TreeNode temp=top.node;
+            int row=top.row;
+            int col=top.col;
+            map.putIfAbsent(col,new TreeMap<>());
+            map.get(col).putIfAbsent(row,new PriorityQueue<>());
+            map.get(col).get(row).offer(temp.val);
+            if(temp.left!=null){
+                q.offer(new newNode(temp.left,row+1,col-1));
+            }
+            if(temp.right!=null){
+                q.offer(new newNode(temp.right,row+1,col+1));
+            }
+        }
+        for(TreeMap<Integer,PriorityQueue<Integer>> ys: map.values()){
+            List<Integer> col=new ArrayList<>();
+            for(PriorityQueue<Integer> nodes : ys.values()){
+                while(!nodes.isEmpty())
+                    col.add(nodes.poll());
+            }
+            res.add(col);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+Top View of Binary Tree
+You are given the root of a binary tree, and your task is to return its top view. The top view of a binary tree is the set of nodes visible when the tree is viewed from the top.
+
+Note:
+
+Return the nodes from the leftmost node to the rightmost node.
+If multiple nodes overlap at the same horizontal position, only the topmost (closest to the root) node is included in the view. 
+Examples:
+
+Input: root = [1, 2, 3]
+Output: [2, 1, 3]
+Explanation: The Green colored nodes represents the top view in the below Binary tree.
+ 
+Input: root = [10, 20, 30, 40, 60, 90, 100]
+Output: [40, 20, 10, 30, 100]
+Explanation: The Green colored nodes represents the top view in the below Binary tree.
+
+
+
+class newNode{
+    int col;
+    Node root;
+    public newNode(Node root,int col){
+        this.col=col;
+        this.root=root;
+    }
+}
+class Solution {
+    public ArrayList<Integer> topView(Node root) {
+        // code here
+        ArrayList<Integer> res=new ArrayList<>();
+        if(root==null)
+            return res;
+        TreeMap<Integer,Integer> map=new TreeMap<>();
+        Queue<newNode> queue=new LinkedList<>();
+        queue.offer(new newNode(root,0));
+        while(!queue.isEmpty()){
+            newNode temp=queue.poll();
+            Node node=temp.root;
+            int col=temp.col;
+            if(!map.containsKey(col)){
+                map.put(col,node.data);
+            }
+            
+            if(node.left!=null){
+                queue.offer(new newNode(node.left,col-1));
+            }
+            if(node.right!=null){
+                queue.offer(new newNode(node.right,col+1));
+            }
+        }
+        for(int a:map.values()){
+           res.add(a);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+Bottom View of Binary Tree
+You are given the root of a binary tree, and your task is to return its bottom view. The bottom view of a binary tree is the set of nodes visible when the tree is viewed from the bottom.
+
+Note: If there are multiple bottom-most nodes for a horizontal distance from the root, then the latter one in the level order traversal is considered.
+
+Examples :
+
+Input: root = [1, 2, 3, 4, 5, N, 6]
+    
+Output: [4, 2, 5, 3, 6]
+Explanation: The Green nodes represent the bottom view of below binary tree.
+    
+Input: root = [20, 8, 22, 5, 3, 4, 25, N, N, 10, 14, N, N, 28, N]
+    
+Output: [5, 10, 4, 28, 25]
+Explanation: The Green nodes represent the bottom view of below binary tree.
+    
+class Tuple{
+    Node  node;
+    int col;
+    public Tuple(int col,Node node){
+        this.col=col;
+        this.node=node;
+    }
+}
+class Solution {
+    public ArrayList<Integer> bottomView(Node root) {
+        // Code here
+        ArrayList<Integer> res=new ArrayList<>();
+        if(res==null)
+            return res;
+        TreeMap<Integer,Integer> map=new TreeMap<>();
+        Queue<Tuple> queue=new LinkedList<>();
+        queue.offer(new Tuple(0,root));
+        while(!queue.isEmpty()){
+            Tuple temp=queue.poll();
+            Node ele=temp.node;
+            int col=temp.col;
+            map.put(col,ele.data);
+            if(ele.left!=null)
+                queue.offer(new Tuple(col-1,ele.left));
+            if(ele.right!=null)
+                queue.offer(new Tuple(col+1,ele.right));
+        }
+        for(int  a : map.values()){
+            res.add(a);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+199. Binary Tree Right Side View
+
+Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+ 
+
+Example 1:
+
+Input: root = [1,2,3,null,5,null,4]
+
+Output: [1,3,4]
+
+Explanation:
+
+
+
+Example 2:
+
+Input: root = [1,2,3,4,null,null,null,5]
+
+Output: [1,3,4,5]
+
+Explanation:
+
+
+
+Example 3:
+
+Input: root = [1,null,3]
+
+Output: [1,3]
+
+Example 4:
+
+Input: root = []
+
+Output: []
+
+
+
+class Solution {
+    public void dfs(List<Integer> res,int level,TreeNode root){
+        if(root==null)
+            return ;
+        if(level==res.size())
+            res.add(root.val);
+        dfs(res,level+1,root.right);
+        dfs(res,level+1,root.left);
+    }
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        dfs(res,0,root);
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+199. Binary Tree left Side View
+
+class Solution {
+    public void dfs(List<Integer> res,int level,TreeNode root){
+        if(root==null)
+            return ;
+        if(level==res.size())
+            res.add(root.val);
+        dfs(res,level+1,root.left);
+        dfs(res,level+1,root.right);
+    }
+    public List<Integer> leftSideView(TreeNode root) {
+        List<Integer> res=new ArrayList<>();
+        dfs(res,0,root);
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+101. Symmetric Tree
+
+Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,2,3,4,4,3]
+Output: true
+Example 2:
+
+
+Input: root = [1,2,2,null,3,null,3]
+Output: false
+class Solution {
+    public boolean solve(TreeNode l,TreeNode r){
+        if(l==null && r==null)
+            return true;
+        if(l==null || r==null)
+            return false;
+        if(l.val!=r.val)
+            return false;
+        return solve(l.left,r.right) && solve(l.right ,r.left);
+    }
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null)  
+            return true;
+        return solve(root.left,root.right);
+    }
+}
