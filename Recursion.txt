@@ -12,37 +12,55 @@ Example 3:
 
 Input: x = 2.00000, n = -2
 Output: 0.25000
-Explanation: 2-2 = 1/22 = 1/4 = 0.25
+Explanation: 2-2 = 1/2^2 = 1/4 = 0.25
 
 class Solution {
     public double myPow(double x, int n) {
-        double d=0;
-        if(n==0){
-            return 1;
-        }
-        if(n>0){
-             return calcu(x,n);
-        }
-        else{
-            return d=1/calcu(x,-n);
+        long N = n;
 
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
         }
-    }
-    public double calcu(double x,int n){
-        if(n==0)
-            return 1;
-        double half=calcu(x,n/2);
 
-        if(n%2==0){
-            return half*half;
-        }
-        else{
-           return x*half*half;
-        }
+        return calcu(x, N);
     }
-    
+
+    public double calcu(double x, long n) {
+        if (n == 0)
+            return 1;
+
+        double half = calcu(x, n / 2);
+
+        if (n % 2 == 0)
+            return half * half;
+        else
+            return half * half * x;
+    }
 }
+class Solution {
+    public double myPow(double x, int n) {
+        long N = n;
 
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+
+        double ans = 1;
+
+        while (N > 0) {
+            if ((N & 1) == 1) {
+                ans *= x;
+            }
+
+            x *= x;
+            N >>= 1;
+        }
+
+        return ans;
+    }
+}
 
 
 
@@ -75,7 +93,12 @@ class Solution {
         if(i<n && k!=-1 && s.charAt(i)=='+'){
             i++;
         }
-        return k*find(i,s,0,k);
+        int ans = find(i, s, 0, k);
+
+	if (ans == Integer.MAX_VALUE || ans == Integer.MIN_VALUE)
+    		return ans;
+
+	return k * ans;
     }
     public int find(int i,String s,int num,int k){
         if(i>=s.length() || !Character.isDigit(s.charAt(i))) return num;
@@ -128,7 +151,7 @@ class Solution {
         long prime = n / 2;
 
         long res = power(5, even);
-        res = (res * power(4, prime)) % mod;
+        res = (res*  power(4, prime)) % mod;
 
         return (int) res;
     }
@@ -229,7 +252,6 @@ class Solution {
 
 
 Generate all binary strings
-Difficulty: MediumAccuracy: 63.9%Submissions: 46K+Points: 4Average Time: 20m
 Given an integer n. You need to generate all the binary strings of n characters representing bits.
 
 Note: Return the strings in  ascending order.
@@ -530,33 +552,42 @@ Output:
 ]
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> res=new ArrayList<>();
-        List<Integer> cur=new ArrayList<>();
-        Arrays.sort(candidates); 
+        Arrays.sort(candidates);
 
-        find(0,candidates,target,cur,res);
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+
+        find(candidates.length, candidates, target, cur, res);
+
         return res;
     }
-    public void find(int ind,int[] arr,int k,List<Integer> cur,  List<List<Integer>> res){
-        if(k==0){
+
+    public void find(int n, int[] arr, int k, List<Integer> cur, List<List<Integer>> res) {
+
+        if (k == 0) {
             res.add(new ArrayList<>(cur));
             return;
         }
 
-        if(ind==arr.length ||  k<0) return;
-        
-        cur.add(arr[ind]);
-        find(ind+1,arr,k-arr[ind],cur,res);
-        cur.remove(cur.size()-1);
-        int nextIndex=ind+1;
-        while(nextIndex<arr.length && arr[ind]==arr[nextIndex]){
-            nextIndex++;
+        if (n == 0 || k < 0)
+            return;
+
+        // Pick current element (use it only once)
+        if (arr[n - 1] <= k) {
+            cur.add(arr[n - 1]);
+            find(n - 1, arr, k - arr[n - 1], cur, res);
+            cur.remove(cur.size() - 1);
         }
-        find(nextIndex,arr,k,cur,res);
+
+        // Skip duplicates while not picking
+        int prev = n - 1;
+        while (prev > 0 && arr[prev] == arr[prev - 1]) {
+            prev--;
+        }
+
+        find(prev, arr, k, cur, res);
     }
 }
-
-
 
 
 
@@ -601,8 +632,8 @@ class Solution {
     }
     public void find(int i,int k,int sum,int []arr,List<Integer>cur, List<List<Integer>> res){
         if(sum==0){
-           if(cur.size()==k) res.add(new ArrayList<>(cur));
-            return;
+           	if(cur.size()==k) res.add(new ArrayList<>(cur));
+            	return;
         }
         if(sum<0 || i>=9) return;
         cur.add(arr[i]);
@@ -659,7 +690,6 @@ class Solution {
 
 
 Subset II
-Difficulty: MediumAccuracy: 50.0%Submissions: 15K+Points: 4Average Time: 30m
 You are given an array arr[] of positive integers (which may contain duplicates), your task is to find all the unique subsets of the array.
 
 Note: You can return the subsets in any order, the driver code will print them in sorted order.
@@ -674,34 +704,39 @@ Input: arr[] = [1, 2, 2]
 Output: [[], [1], [1, 2], [1, 2, 2], [2], [2, 2]]
 Explanation: The number of all the possible subsets will be 2n.
 Now the unique subsets are [], [1], [1, 2], [1, 2, 2], [2], [2, 2].
-
 class Solution {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
-        Arrays.sort(nums); 
-        List<List<Integer>> ans = new ArrayList<>();
-        subset(nums, new ArrayList<>(), 0, ans);
-        return ans;
+        Arrays.sort(nums);
+
+        List<List<Integer>> res = new ArrayList<>();
+        find(0, nums, new ArrayList<>(), res);
+
+        return res;
     }
 
-    public List<List<Integer>>subset(int[] nums, ArrayList<Integer> cur, int index, List<List<Integer>> ans) {
-        if (index == nums.length) {
-            ans.add(new ArrayList<>(cur));
-            return ans;
+    public void find(int i, int[] arr, List<Integer> cur, List<List<Integer>> res) {
+
+        if (i == arr.length) {
+            res.add(new ArrayList<>(cur));
+            return;
         }
 
-        int nextIndex = index + 1;
-        while (nextIndex < nums.length && nums[nextIndex] == nums[index]) {
-            nextIndex++;
-        }
-
-        cur.add(nums[index]);
-        subset(nums, cur, index + 1, ans);
+        // Pick
+        cur.add(arr[i]);
+        find(i + 1, arr, cur, res);
         cur.remove(cur.size() - 1);
 
-        subset(nums, cur, nextIndex, ans);
-        return ans;
+        // Don't Pick (skip duplicates)
+        int next = i + 1;
+        while (next < arr.length && arr[next] == arr[i]) {
+            next++;
+        }
+
+        find(next, arr, cur, res);
     }
 }
+
+
 
 
 
@@ -735,7 +770,6 @@ class Solution {
             res.add(cur.toString());
             return;
         }
-       // if(in>=dig.length()) return;
         String a=map[dig.charAt(in)-'0'];
         for(char c :a.toCharArray()){
             cur.append(c);
@@ -744,6 +778,10 @@ class Solution {
         }
     }
 }
+
+
+
+
 
 
 
@@ -923,6 +961,11 @@ class Solution {
 
 
 
+
+
+
+
+
 Rat in a Maze
 Consider a rat placed at position (0, 0) in an n x n square matrix maze[][]. The rat's goal is to reach the destination at position (n-1, n-1). The rat can move in four possible directions: 'U'(up), 'D'(down), 'L' (left), 'R' (right).
 
@@ -1030,6 +1073,10 @@ class Solution {
 
 
 
+
+
+
+
 M-Coloring Problem
 
 You are given an undirected graph consisting of V vertices and E edges represented by a list edges[][], along with an integer m. Your task is to determine whether it is possible to color the graph using at most m different colors such that no two adjacent vertices share the same color. Return true if the graph can be colored with at most m colors, otherwise return false.
@@ -1087,6 +1134,14 @@ class Solution {
         return true;
     }
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1201,7 +1256,7 @@ class Solution {
             return;
         }
 
-        for (int i = ind; i < num.length(); i++) {
+        for (int i = ind; i  < num.length(); i++) {
 
             if (i > ind && num.charAt(ind) == '0') break;
 
@@ -1222,8 +1277,7 @@ class Solution {
                 solve(i + 1, cur_sum - cur_num, -cur_num, sb, num, target, res);
                 sb.setLength(len);
                 sb.append("*").append(cur_str);
-                solve(i + 1, cur_sum - pre_sum + pre_sum * cur_num,
-                      pre_sum * cur_num, sb, num, target, res);
+                solve(i + 1, cur_sum - pre_sum + pre_sum * cur_num,pre_sum * cur_num, sb, num, target, res);
                 sb.setLength(len);
             }
         }

@@ -93,6 +93,13 @@ class Solution {
 
 
 
+
+
+
+
+
+
+
 Find Length of Linked List
 
 Given head of a singly linked list. The task is to find the length of the linked list, where length is defined as the number of nodes in the linked list.
@@ -129,6 +136,12 @@ class Solution {
         return ans;
     }
 }
+
+
+
+
+
+
 
 
 
@@ -190,6 +203,10 @@ class Solution {
         return head;
     }
 }
+
+
+
+
 
 
 
@@ -276,34 +293,32 @@ Example 2:
 Input: head = [1,2,3,4,5,6]
 Output: [4,5,6]
 Explanation: Since the list has two middle nodes with values 3 and 4, we return the second one.
-
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
     public ListNode middleNode(ListNode head) {
-        if(head==null || head.next==null){
+        if (head == null || head.next == null) {
             return head;
         }
-        ListNode one=head;
-        ListNode two=head.next;
-        ListNode ans=null;
-        while(true){
+        ListNode one = head;
+        ListNode two = head;
+        while(two!=null && two.next!=null){
             one=one.next;
-            if(two.next==null){
-                ans=one;
-                break;
-            }
-            else{
-                if(two.next.next==null){
-                    ans=one;
-                    break;
-                }
-                else{
-                    two=two.next.next;
-                }
-            }
+            two=two.next.next;
         }
-        return ans;
+        return one;
     }
-} 
+}
+
+
         
 
 
@@ -435,73 +450,26 @@ Output: false
 Explanation: There is no cycle in the linked list.
  
 
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        if (head == null) {
+        if(head==null || head.next==null){
             return false;
         }
-        if (head.next == head) {
-            return true;
-        }
-        int f = 0;
-        ListNode one = head;
-        ListNode two = head.next;
-        while (two != null) {
-            if (one == two) {
-                f = 1;
-                break;
-            }
-            one = one.next;
-            if (two.next != null) {
-                if (two.next.next != null) {
-                    two = two.next.next;
-                } else {
-                    break;
-                }
-            } else {
-                break;
+        ListNode one=head;
+        ListNode two=one;
+        while(two!=null && two.next!=null){
+            one=one.next;
+            two=two.next.next;
+            if(one==two){
+                return true;
             }
         }
-        if (f == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-}
-/**public class Solution {
-    public boolean hasCycle(ListNode head) {
-
-        if(head == null)return false;
-
-        ListNode fast = head;
-        ListNode slow = head;
-
-         while(slow.next!=null && fast.next!=null &&  fast.next.next!=null)
-        {
-            slow = slow.next;
-            fast = fast.next.next;
-
-            if(slow == fast)
-            return true; 
-        }
-
         return false;
-
         
     }
-} */
+}
+
+
 
 
 
@@ -560,29 +528,32 @@ pos is -1 or a valid index in the linked-list.
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        if(head==null || head.next==null){
+        if (head == null || head.next == null) {
             return null;
         }
-        ListNode one=head;
-        ListNode two=one;
-        while(two!=null && two.next!=null){
-            one=one.next;
-            two=two.next.next;
-            if(one==two){
-                break;
+        ListNode one = head;
+        ListNode two = one;
+        while (two != null && two.next != null) {
+            one = one.next;
+            two = two.next.next;
+            if (one == two) {
+                ListNode ans = head;
+                while (ans != one) {
+                    ans = ans.next;
+                    one = one.next;
+                }
+                return ans;
             }
         }
-        if(two==null || two.next==null){
-            return null;
-        }
-        ListNode ans=head;
-        while(ans!=one){
-            ans=ans.next;
-            one=one.next;
-        }
-        return ans;
+        return null;
     }
 }
+
+
+
+
+
+
 
 Find length of Loop
 Given the head of a linked list, determine whether the list contains a loop. If a loop is present, return the number of nodes in the loop, otherwise return 0.
@@ -630,6 +601,9 @@ class Solution {
         return 0; 
     }
 }
+
+
+
 
 
 
@@ -767,28 +741,23 @@ Output: [1]
 
 class Solution {
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null || n == 0) return head;
-
-        ListNode temp = null, cur = head;
-        int k = 0;
-
-        while (cur != null) {
-            cur = cur.next;
-            k++;
-
-            if (k == n + 1) temp = head;
-            else if (k > n + 1) temp = temp.next;
+        if(head.next==null && n==1) return null;
+        int c=1;
+        ListNode curr=head;
+        while(c<=n){
+            curr=curr.next;
+            c++;
         }
-
-        if (k == n) return head.next;
-
-        if (temp != null && temp.next != null)
-            temp.next = temp.next.next;
-
+        if(curr==null)  return head.next;
+        ListNode temp=head;
+        while(curr.next!=null){
+            curr=curr.next;
+            temp=temp.next;
+        }
+        temp.next=temp.next.next;
         return head;
     }
-}\
-
+}
 
 
 
@@ -853,7 +822,7 @@ class Solution {
             two=two.next.next;
         }
         pre.next=one.next;
-         return head;
+        return head;
     }
 }
 
@@ -971,36 +940,63 @@ Explanation: After arranging all the 0s, 1s and 2s in the given format, the outp
 
 class Solution {
     public Node segregate(Node head) {
-        // code here
-        int one=0,two=0,zero=0;
-        Node temp=head;
-        while(temp!=null){
-            if(temp.data==0)    zero++;
-            else if(temp.data==1)   one++;
-            else two++;
-            temp=temp.next;
+
+        Node zeroHead = null, zeroTail = null;
+        Node oneHead = null, oneTail = null;
+        Node twoHead = null, twoTail = null;
+
+        Node temp = head;
+
+        while (temp != null) {
+
+            Node next = temp.next;
+            temp.next = null;
+
+            if (temp.data % 3 == 0) {
+
+                if (zeroHead == null) {
+                    zeroHead = zeroTail = temp;
+                } else {
+                    zeroTail.next = temp;
+                    zeroTail = temp;
+                }
+
+            } else if (temp.data % 3 == 1) {
+
+                if (oneHead == null) {
+                    oneHead = oneTail = temp;
+                } else {
+                    oneTail.next = temp;
+                    oneTail = temp;
+                }
+
+            } else {
+
+                if (twoHead == null) {
+                    twoHead = twoTail = temp;
+                } else {
+                    twoTail.next = temp;
+                    twoTail = temp;
+                }
+            }
+
+            temp = next;
         }
-        head=new Node(0);
-        temp=head;
-        while(zero>0){
-            Node cur=new Node(0);
-            temp.next=cur;
-            temp=temp.next;
-            zero--;
-        }
-        while(one>0){
-            Node cur=new Node(1);
-            temp.next=cur;            
-            temp=temp.next;
-            one--;
-        }
-        while(two>0){
-            Node cur=new Node(2);
-            temp.next=cur; 
-            temp=temp.next;
-            two--;
-        }
-        return head.next;
+
+        // Connect the lists
+        if (zeroTail != null)
+            zeroTail.next = (oneHead != null) ? oneHead : twoHead;
+
+        if (oneTail != null)
+            oneTail.next = twoHead;
+
+        if (zeroHead != null)
+            return zeroHead;
+
+        if (oneHead != null)
+            return oneHead;
+
+        return twoHead;
     }
 }
    
@@ -1029,84 +1025,112 @@ Input: head = [1,2,3,4,5], k = 3
 Output: [3,2,1,4,5]
 
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
-    ListNode reverse(ListNode head, int k) {
-        ListNode temp = head;
-        ListNode forward = null;
-        ListNode curr = null;
-        int a = 0;
 
-        while (temp != null && a < k) {
-            forward = temp.next;
-            temp.next = curr;
-            curr = temp;
-            temp = forward;
-            a++;
+    ListNode reverse(ListNode head, int k) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (k-- > 0) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
-        return curr; 
+
+        return prev;
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null || head.next == null || k == 1) {
-            return head;
-        }
 
+        if (head == null || k == 1)
+            return head;
+
+        int count = 0;
         ListNode temp = head;
-        int a = 0;
         while (temp != null) {
-            a++;
+            count++;
             temp = temp.next;
         }
 
-        ListNode mainhead = new ListNode(-1); 
-        ListNode pre = mainhead;
-        temp = head;
+        ListNode dummy = new ListNode(0);
+        ListNode prevGroupEnd = dummy;
 
-        while (a >= k) { 
-            ListNode ghead = head;
-            ListNode nextGroupHead = head; 
+        while (count >= k) {
 
-            for (int i = 0; i < k && nextGroupHead != null; i++) {
-                nextGroupHead = nextGroupHead.next;
-            }
+            ListNode groupStart = head;
+            ListNode nextGroup = head;
 
-            ListNode temphead = reverse(ghead, k);
+            for (int i = 0; i < k; i++)
+                nextGroup = nextGroup.next;
 
-            if (mainhead.next == null) {
-                mainhead.next = temphead;
-            } else {
-                pre.next = temphead; 
-            }
+            ListNode newHead = reverse(groupStart, k);
 
-            pre = ghead; 
-            head = nextGroupHead; 
-            a -= k;
+            prevGroupEnd.next = newHead;
+
+            prevGroupEnd = groupStart;
+
+            head = nextGroup;
+
+            count -= k;
         }
 
-        pre.next = head;
+        prevGroupEnd.next = head;
 
-        return mainhead.next;
+        return dummy.next;
     }
 }
 
 
 
+class Solution {
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+
+        // Check if there are at least k nodes
+        ListNode temp = head;
+        int count = 0;
+
+        while (temp != null && count < k) {
+            temp = temp.next;
+            count++;
+        }
+
+        // Less than k nodes left
+        if (count < k)
+            return head;
+
+        // Reverse first k nodes
+        ListNode prev = null;
+        ListNode curr = head;
+
+        for (int i = 0; i < k; i++) {
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // head is now the last node of this group
+        head.next = reverseKGroup(curr, k);
+
+        // prev is the new head
+        return prev;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 61. Rotate List
-Solved
-Medium
-Topics
-premium lock icon
-Companies
+
 Given the head of a linked list, rotate the list to the right by k places.
 
  

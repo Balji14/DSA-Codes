@@ -1,1 +1,1302 @@
-704. Binary SearchSGiven an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.You must write an algorithm with O(log n) runtime complexity. Example 1:Input: nums = [-1,0,3,5,9,12], target = 9Output: 4Explanation: 9 exists in nums and its index is 4Example 2:Input: nums = [-1,0,3,5,9,12], target = 2Output: -1Explanation: 2 does not exist in nums so return -1class Solution {    public int search(int[] nums, int target) {        return search(nums,0,nums.length-1,target);    }    public int search(int[] nums,int s,int e,int k){        if(s<=e){            int m=s+(e-s)/2;            if(nums[m]==k)  return m;            else if(k<nums[m]){                    return search(nums,s,m-1,k);            }            else    return search(nums,m+1,e,k);        }        return -1;    }}---Implement Lower BoundGiven a sorted array arr[] and a number target, the task is to find the lower bound of the target in this given array. The lower bound of a number is defined as the smallest index in the sorted array where the element is greater than or equal to the given number.Note: If all the elements in the given array are smaller than the target, the lower bound will be the length of the array.Examples :Input:  arr[] = [2, 3, 7, 10, 11, 11, 25], target = 9Output: 3Explanation: 3 is the smallest index in arr[] where element (arr[3] = 10) is greater than or equal to 9.Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 11Output: 4Explanation: 4 is the smallest index in arr[] where element (arr[4] = 11) is greater than or equal to 11.Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 100Output: 7Explanation: As no element in arr[] is greater than 100, return the length of array.class Solution {    int lower;    int lowerBound(int[] arr, int target) {        // code here        lower=arr.length;        search(arr,0,arr.length-1,target);        return lower;    }    public void search(int[] nums,int s,int e,int k){        if(s<=e){            int m=s+(e-s)/2;             if(k<=nums[m]){                    lower=m;                    search(nums,s,m-1,k);            }            else{                 search(nums,m+1,e,k);            }        }    }}---Implement Upper BoundGiven a sorted array arr[] and a number target, the task is to find the upper bound of the target in this given array.The upper bound of a number is defined as the smallest index in the sorted array where the element is greater than the given number.Note: If all the elements in the given array are smaller than or equal to the target, the upper bound will be the length of the array.Examples :Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 9Output: 3Explanation: 3 is the smallest index in arr[], at which element (arr[3] = 10) is larger than 9.Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 11Output: 6Explanation: 6 is the smallest index in arr[], at which element (arr[6] = 25) is larger than 11.Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 100Output: 7Explanation: As no element in arr[] is greater than 100, return the length of array.class Solution {    int upper;    int upperBound(int[] arr, int target) {        // code here        upper=arr.length;        search(arr,0,arr.length-1,target);        return upper;    }    public void search(int[] nums,int s,int e,int k){        if(s<=e){            int m=s+(e-s)/2;             if(k<nums[m]){                    upper=m;                    search(nums,s,m-1,k);            }            else{                 search(nums,m+1,e,k);            }        }    }}---35. Search Insert PositionGiven a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.You must write an algorithm with O(log n) runtime complexity. Example 1:Input: nums = [1,3,5,6], target = 5Output: 2Example 2:Input: nums = [1,3,5,6], target = 2Output: 1Example 3:Input: nums = [1,3,5,6], target = 7Output: 4class Solution {    public int searchInsert(int[] nums, int target) {        int low = 0;        int high = nums.length - 1;        while(low <= high) {            int mid = (low + high)/2 ;        if(nums[mid] == target) {            return mid;        }        else if (nums[mid] < target) {            low = mid + 1;        }        else {            high = mid - 1;        }         }        return low;    }}--------------------------------------------------------------------------------------Floor in a Sorted ArrayGiven a sorted array arr[] and an integer x, find the index (0-based) of the largest element in arr[] that is less than or equal to x. This element is called the floor of x. If such an element does not exist, return -1.Note: In case of multiple occurrences of floor of x, return the index of the last occurrence.ExamplesInput: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 5Output: 1Explanation: Largest number less than or equal to 5 is 2, whose index is 1.Input: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 11Output: 4Explanation: Largest Number less than or equal to 11 is 10, whose indices are 3 and 4. The index of last occurrence is 4.Input: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 0Output: -1Explanation: No element less than or equal to 0 is found. So, output is -1.class Solution {    int lower;    public int findFloor(int[] arr, int x) {        lower = -1;        search(arr, 0, arr.length - 1, x);        return lower;    }    public void search(int[] nums, int s, int e, int k) {        if (s <= e) {            int m = s + (e - s) / 2;            if (nums[m]<= k) {                lower = m;          // exact match                search(nums, m + 1, e, k);  // search rightmost            }                       else {                search(nums, s, m - 1, k);            }        }    }}------34. Find First and Last Position of Element in Sorted ArrayGiven an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.If target is not found in the array, return [-1, -1].You must write an algorithm with O(log n) runtime complexity. Example 1:Input: nums = [5,7,7,8,8,10], target = 8Output: [3,4]Example 2:Input: nums = [5,7,7,8,8,10], target = 6Output: [-1,-1]Example 3:Input: nums = [], target = 0Output: [-1,-1] class Solution {    public int[] searchRange(int[] nums, int target) {        int first = findFirst(nums, target);        int last = findLast(nums, target);        return new int[]{first, last};    }        private int findFirst(int[] nums, int target) {        int l = 0, r = nums.length - 1, ans = -1;        while (l <= r) {            int mid = l + (r - l) / 2;            if (nums[mid] == target) {                ans = mid;                r = mid - 1;             } else if (nums[mid] < target) {                l = mid + 1;            } else {                r = mid - 1;            }        }        return ans;    }        private int findLast(int[] nums, int target) {        int l = 0, r = nums.length - 1, ans = -1;        while (l <= r) {            int mid = l + (r - l) / 2;            if (nums[mid] == target) {                ans = mid;                l = mid + 1;            } else if (nums[mid] < target) {                l = mid + 1;            } else {                r = mid - 1;            }        }        return ans;    }}Number of occurrenceGiven a sorted array, arr[] and a number target, you need to find the number of occurrences of target in arr[]. Examples :Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 2Output: 4Explanation: target = 2 occurs 4 times in the given array so the output is 4.Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 4Output: 0Explanation: target = 4 is not present in the given array so the output is 0.Input: arr[] = [8, 9, 10, 12, 12, 12], target = 12Output: 3Explanation: target = 12 occurs 3 times in the given array so the output is 3class Solution {    int count;    int countFreq(int[] arr, int target) {        // code here        count=0;        search(arr,0,arr.length-1,target);        return count;    }    public void search(int[] nums,int s,int e,int k){        if(s<=e){            int m=s+(e-s)/2;            if(nums[m]==k){                count++;                search(nums,s,m-1,k);                search(nums,m+1,e,k);            }             else if(k<nums[m]){                search(nums,s,m-1,k);            }            else search(nums,m+1,e,k);        }    }}----33. Search in Rotated Sorted ArraySolvedMediumTopicspremium lock iconCompaniesThere is an integer array nums sorted in ascending order (with distinct values).Prior to being passed to your function, nums is possibly left rotated at an unknown index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be left rotated by 3 indices and become [4,5,6,7,0,1,2].Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.You must write an algorithm with O(log n) runtime complexity. Example 1:Input: nums = [4,5,6,7,0,1,2], target = 0Output: 4Example 2:Input: nums = [4,5,6,7,0,1,2], target = 3Output: -1Example 3:Input: nums = [1], target = 0Output: -1 class Solution {    public int search(int[] nums, int target) {        return binarySearch(nums, 0, nums.length - 1, target);    }    public int binarySearch(int[] nums, int s, int e, int k) {        if (s > e) return -1;        int m = s + (e - s) / 2;        if (nums[m] == k) return m;        if (nums[s] <= nums[m]) {              if (k >= nums[s] && k < nums[m]) {                return binarySearch(nums, s, m - 1, k);            } else {                return binarySearch(nums, m + 1, e, k);            }        }         else {              if (k > nums[m] && k <= nums[e]) {                return binarySearch(nums, m + 1, e, k);            } else {                return binarySearch(nums, s, m - 1, k);            }        }    }}----------81. Search in Rotated Sorted Array IISolvedMediumTopicspremium lock iconCompaniesThere is an integer array nums sorted in non-decreasing order (not necessarily with distinct values).Before being passed to your function, nums is rotated at an unknown pivot index k (0 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,4,4,5,6,6,7] might be rotated at pivot index 5 and become [4,5,6,6,7,0,1,2,4,4].Given the array nums after the rotation and an integer target, return true if target is in nums, or false if it is not in nums.You must decrease the overall operation steps as much as possible. Example 1:Input: nums = [2,5,6,0,0,1,2], target = 0Output: trueExample 2:Input: nums = [2,5,6,0,0,1,2], target = 3Output: false Constraints:1 <= nums.length <= 5000-104 <= nums[i] <= 104nums is guaranteed to be rotated at some pivot.-104 <= target <= 104 Follow up: This problem is similar to Search in Rotated Sorted Array, but nums may contain duplicates. Would this affect the runtime complexity? How and why?class Solution {    public boolean search(int[] nums, int target) {        return search(nums,0,nums.length-1,target);    }    public boolean search(int nums[],int s,int e ,int k){        if(s>e) return false;        int m=s+(e-s)/2;        if(nums[m]==k)  return true;        if(nums[s] == nums[m] && nums[m] == nums[e]){            return search(nums, s + 1, e - 1, k);        }        if(nums[s]<=nums[m]){            if(k>=nums[s] && k<nums[m])                return search(nums,s,m-1,k);            else    return search(nums,m+1,e,k);        }        else{            if(k<=nums[e] && k>nums[m]){                return search(nums,m+1,e,k);            }            else return search(nums,s,m-1,k);        }    }}----153. Find Minimum in Rotated Sorted ArraySolvedMediumTopicspremium lock iconCompaniesHintSuppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:[4,5,6,7,0,1,2] if it was rotated 4 times.[0,1,2,4,5,6,7] if it was rotated 7 times.Notice that rotating an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array [a[n-1], a[0], a[1], a[2], ..., a[n-2]].Given the sorted rotated array nums of unique elements, return the minimum element of this array.You must write an algorithm that runs in O(log n) time. Example 1:Input: nums = [3,4,5,1,2]Output: 1Explanation: The original array was [1,2,3,4,5] rotated 3 times.Example 2:Input: nums = [4,5,6,7,0,1,2]Output: 0Explanation: The original array was [0,1,2,4,5,6,7] and it was rotated 4 times.Example 3:Input: nums = [11,13,15,17]Output: 11Explanation: The original array was [11,13,15,17] and it was rotated 4 times. class Solution {    int low;    public int findMin(int[] nums) {        low=0;        return find(nums,0,nums.length-1);    }    public int find(int[] nums,int s,int e){        if(s>e) return low;        int m=s+(e-s)/2;        low=nums[m];        if(nums[s]>nums[m] && nums[e]>nums[m] )            return find(nums,s+1,e-1);        if(nums[s]<=nums[m]){            if(nums[e]<nums[s]){                return find(nums,m+1,e);            }            else {                 return find(nums,s,m-1);            }        }        else{            return find(nums,m+1,e);        }    }}----Find Kth RotationDifficulty: EasyAccuracy: 23.16%Submissions: 321K+Points: 2Average Time: 20mGiven an increasing sorted rotated array arr[] of distinct integers. The array is right-rotated k times. Find the value of k.Let's suppose we have an array arr[] = [2, 4, 6, 9], if we rotate it by 2 times it will look like this:After 1st Rotation : [9, 2, 4, 6]After 2nd Rotation : [6, 9, 2, 4]Examples:Input: arr[] = [5, 1, 2, 3, 4]Output: 1Explanation: The given array is [5, 1, 2, 3, 4]. The original sorted array is [1, 2, 3, 4, 5]. We can see that the array was rotated 1 times to the right.Input: arr = [1, 2, 3, 4, 5]Output: 0Explanation: The given array is not rotated.class Solution {    public int findKRotation(int arr[]) {        // Code here        int s=0,e=arr.length-1;        while(s<=e){            int m=s+(e-s)/2;            if(m>0 && arr[m]<arr[m-1])  return m;                        if(arr[s]<=arr[e])  return s;                        if(arr[s]<=arr[m]) s=m+1;            else e=m-1;        }        return 0;    }}----540. Single Element in a Sorted ArraySolvedMediumTopicspremium lock iconCompaniesYou are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.Return the single element that appears only once.Your solution must run in O(log n) time and O(1) space. Example 1:Input: nums = [1,1,2,3,3,4,4,8,8]Output: 2Example 2:Input: nums = [3,3,7,7,10,11,11]Output: 10 class Solution {    public int singleNonDuplicate(int[] nums) {        int s=0,e=nums.length-1;        while(s<e){            int m=s+(e-s)/2;            if(m%2==1)  m--;            if(nums[m]==nums[m+1])  s=m+2;            else e=m-1;        }        return nums[s];    }}162. Find Peak ElementSolvedMediumTopicspremium lock iconCompaniesA peak element is an element that is strictly greater than its neighbors.Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.You may imagine that nums[-1] = nums[n] = -8. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.You must write an algorithm that runs in O(log n) time. Example 1:Input: nums = [1,2,3,1]Output: 2Explanation: 3 is a peak element and your function should return the index number 2.Example 2:Input: nums = [1,2,1,3,5,6,4]Output: 5Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.class Solution {    public int findPeakElement(int[] nums) {        return find(nums, 0, nums.length - 1);    }    public int find(int[] nums, int s, int e) {        if (s == e) return s;         int m = s + (e - s) / 2;        if (nums[m] < nums[m + 1]) {            return find(nums, m + 1, e);        }        return find(nums, s, m);    }}	69. Sqrt(x)Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well.You must not use any built-in exponent function or operator.For example, do not use pow(x, 0.5) in c++ or x 0.5 in python. Example 1:Input: x = 4Output: 2Explanation: The square root of 4 is 2, so we return 2.Example 2:Input: x = 8Output: 2Explanation: The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.class Solution {    int ans;    public int mySqrt(int x) {        if(x==0 || x==1)    return x;        ans=0;        sqrt(1,x,x);        return ans;    }    public void  sqrt(int s,int e,int x){        if(s>e) return ;        int m=(s+e)/2;        if(m==x/m){            ans=m;            return;        }        if(m>x/m)    sqrt(s,m-1,x);        else{            ans=m;            sqrt(m+1,e,x);        }    }}Find nth root of mYou are given 2 numbers n and m, the task is to find nvm (nth root of m). If the root is not integer then return -1.Examples :Input: n = 3, m = 8Output: 2Explanation: 23 = 8Input: n = 3, m = 9Output: -1Explanation: 3rd root of 9 is not integer.Input: n = 4, m = 16Output: 2Explanation: 24 = 16class Solution {    public int nthRoot(int n, int m) {        if (m == 1) return 1;        if(m==0)    return 0;        int s = 1, e = m;        while (s <= e) {            int mid = s + (e - s) / 2;            long pow = power(mid, n, m);            if (pow == m) return mid;            else if (pow > m) e = mid - 1;            else s = mid + 1;          }        return -1;    }    public long power(int base, int exp, int limit) {        long res = 1;        while (exp > 0) {            if (exp%2== 1) {                res *= base;                if (res > limit || exp==1) return res;            }            base *= base;            if (base > limit) return base;              exp >>= 1;        }        return res;    }}875. Koko Eating BananasKoko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.Return the minimum integer k such that she can eat all the bananas within h hours. Example 1:Input: piles = [3,6,7,11], h = 8Output: 4Example 2:Input: piles = [30,11,23,4,20], h = 5Output: 30Example 3:Input: piles = [30,11,23,4,20], h = 6Output: 23class Solution {    public int minEatingSpeed(int[] piles, int h) {        int s=1;        int e=0;        for(int pile : piles){            e=Math.max(e,pile);        }        if(h==piles.length) return e;        int result=0;        while(s<=e){            int k=(s+e)/2;            double count=0;            for(int pile : piles){                count+=(int)Math.ceil((double)pile/k);                if(count>h) break;            }            if(count<=h){                result=k;                e=k-1;            }            else {                s=k+1;            }        }        return result;    }    } 1482. Minimum Number of Days to Make m BouquetsSolvedMediumTopicspremium lock iconCompaniesHintYou are given an integer array bloomDay, an integer m and an integer k.You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet.Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1. Example 1:Input: bloomDay = [1,10,3,10,2], m = 3, k = 1Output: 3Explanation: Let us see what happened in the first three days. x means flower bloomed and _ means flower did not bloom in the garden.We need 3 bouquets each should contain 1 flower.After day 1: [x, _, _, _, _]   // we can only make one bouquet.After day 2: [x, _, _, _, x]   // we can only make two bouquets.After day 3: [x, _, x, _, x]   // we can make 3 bouquets. The answer is 3.Example 2:Input: bloomDay = [1,10,3,10,2], m = 3, k = 2Output: -1Explanation: We need 3 bouquets each has 2 flowers, that means we need 6 flowers. We only have 5 flowers so it is impossible to get the needed bouquets and we return -1.Example 3:Input: bloomDay = [7,7,7,7,12,7,7], m = 2, k = 3Output: 12Explanation: We need 2 bouquets each should have 3 flowers.Here is the garden after the 7 and 12 days:After day 7: [x, x, x, x, _, x, x]We can make one bouquet of the first three flowers that bloomed. We cannot make another bouquet from the last three flowers that bloomed because they are not adjacent.After day 12: [x, x, x, x, x, x, x]It is obvious that we can make two bouquets in different ways. class Solution {    public int minDays(int[] bloomDay, int m, int k) {        int s=Integer.MAX_VALUE,e=0;        for(int day : bloomDay){            s=Math.min(s,day);            e=Math.max(e,day);        }        int result=-1;        while(s<=e){            int mid=s+(e-s)/2;            if(can(bloomDay,mid,m,k)){                result=mid;                e=mid-1;            }            else    s=mid+1;        }        return result;    }    public boolean can(int[] bloom,int mid,int m,int k){        int count=0;        int c=0;        for(int day : bloom){            if(day<=mid){                c++;                if(c==k){                    count++;                    c=0;                }            }            else{                c=0;            }        }        return m<=count;    }}1283. Find the Smallest Divisor Given a ThresholdSolvedMediumTopicspremium lock iconCompaniesHintGiven an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold.Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).The test cases are generated so that there will be an answer. Example 1:Input: nums = [1,2,5,9], threshold = 6Output: 5Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. If the divisor is 4 we can get a sum of 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). Example 2:Input: nums = [44,22,33,11,1], threshold = 5Output: 44class Solution {    public int smallestDivisor(int[] nums, int threshold) {        int s=1,e=1000000;         while(s<=e){            int mid=s+(e-s)/2;            if(can(nums,threshold,mid)){                e=mid-1;            }            else    s=mid+1;        }        return s;    }    public boolean can(int[] nums, int t,int d){        int sum=0;        for(int num : nums){            sum+=(num+d-1)/d;        }        return sum<=t;    }}1011. Capacity To Ship Packages Within D DaysSolvedMediumTopicspremium lock iconCompaniesHintA conveyor belt has packages that must be shipped from one port to another within days days.The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days. Example 1:Input: weights = [1,2,3,4,5,6,7,8,9,10], days = 5Output: 15Explanation: A ship capacity of 15 is the minimum to ship all the packages in 5 days like this:1st day: 1, 2, 3, 4, 52nd day: 6, 73rd day: 84th day: 95th day: 10Note that the cargo must be shipped in the order given, so using a ship of capacity 14 and splitting the packages into parts like (2, 3, 4, 5), (1, 6, 7), (8), (9), (10) is not allowed.Example 2:Input: weights = [3,2,2,4,1,4], days = 3Output: 6Explanation: A ship capacity of 6 is the minimum to ship all the packages in 3 days like this:1st day: 3, 22nd day: 2, 43rd day: 1, 4Example 3:Input: weights = [1,2,3,1,1], days = 4Output: 3Explanation:1st day: 12nd day: 23rd day: 34th day: 1, 1class Solution {    public int shipWithinDays(int[] weights, int days) {        int s = 0, e = 0;        for (int w : weights) {            s = Math.max(s, w);            e += w;        }        int result = e;        while (s <= e) {            int mid = s + (e - s) / 2;            if (can(weights, mid, days)) {                result = mid;                e = mid - 1;            } else {                s = mid + 1;            }        }        return result;    }    public boolean can(int[] weights, int capacity, int days) {        int neededDays = 1;          int currentLoad = 0;        for (int w : weights) {            if (w > capacity)                 return false;            if (currentLoad + w <= capacity) {                currentLoad += w;            } else {                neededDays++;                currentLoad = w;            }        }        return neededDays <= days;    }}1539. Kth Missing Positive NumberGiven an array arr of positive integers sorted in a strictly increasing order, and an integer k.Return the kth positive integer that is missing from this array. Example 1:Input: arr = [2,3,4,7,11], k = 5Output: 9Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9.Example 2:Input: arr = [1,2,3,4], k = 2Output: 6Explanation: The missing positive integers are [5,6,7,...]. The 2nd missing positive integer is 6.class Solution {    public int findKthPositive(int[] arr, int k) {        int s=0,e=arr.length;        while(s<e){            int m=s+(e-s)/2;            if(arr[m]-m-1<k){                s=m+1;            }            else    e=m;        }        return s+k;    }}74. Search a 2D MatrixYou are given an m x n integer matrix matrix with the following two properties:Each row is sorted in non-decreasing order.The first integer of each row is greater than the last integer of the previous row.Given an integer target, return true if target is in matrix or false otherwise.You must write a solution in O(log(m * n)) time complexity.Example 1:Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3Output: trueExample 2:Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13Output: falseclass Solution {    public boolean searchMatrix(int[][] matrix, int t) {        int m=matrix.length;        int n=matrix[0].length;        int l=0;        int h=m-1;        while(l<=h){            int mid=l+(h-l)/2;            int p=search(matrix,t,mid,n);            if(p==0){                return true;            }            else if(p==1){                l=mid+1;            }            else{                h=mid-1;            }        }        return false;    }    public static int search(int[][] m,int t,int row,int col){            if(t<m[row][0]){                return -1;            }            if(t>m[row][col-1]){                return 1;            }            int l=0;            int h=col-1;            while(l<=h){                int mid=l+(h-l)/2;                if(m[row][mid]==t){                    return 0;                }                else if(t>m[row][mid]){                    l=mid+1;                }                else{                    h=mid-1;                }            }            return -2;    }}-----------------------------------------------------------------------------------------------------------240. Search a 2D Matrix IIWrite an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:Integers in each row are sorted in ascending from left to right.Integers in each column are sorted in ascending from top to bottom.Example 1:Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5Output: trueExample 2:Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20Output: falseclass Solution {    public boolean searchMatrix(int[][] matrix, int target) {        int m = matrix.length;        int n = matrix[0].length;        int i = 0, j = n - 1;        while( i < m && j >= 0 ) {            if ( matrix[i][j] == target) return true;            if ( matrix[i][j] > target) {                    j--;            } else {                i++;            }        }    return false;    }}----------------------------------------------------------------------------------------------1901. Find a Peak Element IIA peak element in a 2D grid is an element that is strictly greater than all of its adjacent neighbors to the left, right, top, and bottom.Given a 0-indexed m x n matrix mat where no two adjacent cells are equal, find any peak element mat[i][j] and return the length 2 array [i,j].You may assume that the entire matrix is surrounded by an outer perimeter with the value -1 in each cell.You must write an algorithm that runs in O(m log(n)) or O(n log(m)) time.Example 1:Input: mat = [[1,4],[3,2]]Output: [0,1]Explanation: Both 3 and 4 are peak elements so [1,0] and [0,1] are both acceptable answers.Example 2:Input: mat = [[10,20,15],[21,30,14],[7,16,32]]Output: [1,1]Explanation: Both 30 and 32 are peak elements so [1,1] and [2,2] are both acceptable answers.class Solution {    public int find(int[][] mat,int row,int col){        int maxvalue=-1;        int index=-1;        for(int i=0;i<row;i++){            if(mat[i][col]>maxvalue){                maxvalue=mat[i][col];                index=i;            }        }        return index;    }    public int[] findPeakGrid(int[][] mat) {        int p = 0;        int r = mat.length;        int c = mat[0].length;        int low=0;        int high=c-1;        while(low<=high){            int mid=(low+high)/2;            int maxrowindex=find(mat,r,mid);            int left = (mid> 0) ? mat[ maxrowindex][mid-1] : Integer.MIN_VALUE;            int right = ( mid< c - 1) ? mat[ maxrowindex][mid+ 1] : Integer.MIN_VALUE;            if(mat[maxrowindex][mid] > left && mat[maxrowindex][mid] > right){                return new int[] { maxrowindex, mid };            }            else if(mat[maxrowindex][mid] <left ){                high=mid-1;            }            else                low=mid+1;        }        return new int[] { -1, -1 };    }}----------------------------------------------------------------------Median in a row-wise sorted MatrixGiven a row-wise sorted matrix mat[][] of size n*m, where the number of rows and columns is always odd. Return the median of the matrix.Examples:Input: mat[][] = [[1, 3, 5],                **\[2, 6, 9],**                \*\*\\\[3, 6, 9]]\*\*Output: 5Explanation: Sorting matrix elements gives us [1, 2, 3, 3, 5, 6, 6, 9, 9]. Hence, 5 is median.Input: mat[][] = [[2, 4, 9],                **\[3, 6, 7],**                \*\*\\\[4, 7, 10]]\*\*Output: 6Explanation: Sorting matrix elements gives us [2, 3, 4, 4, 6, 7, 7, 9, 10]. Hence, 6 is median.Input: mat = [[3], [4], [8]]Output: 4Explanation: Sorting matrix elements gives us [3, 4, 8]. Hence, 4 is median.// User function Template for Javaclass Solution {    int median(int mat[][]) {        int m=mat.length;        int n=mat[0].length;        int desired=(m*n+1)/2;        int l=Integer.MAX_VALUE;        int h=Integer.MIN_VALUE;        for(int i=0;i<m;i++){            l=Math.min(l,mat[i][0]);            h=Math.max(h,mat[i][n-1]);        }        while(l<=h){            int c=0;            int mid=l+(h-l)/2;            for(int i=0;i<m;i++){                c+=findLess(mat[i],mid);            }//we need c such that it should be just grater then the desired number                if(c<desired){                    l=mid+1;                }                else{                    h=mid-1;             }        }        return l;    }    public int findLess(int[] arr,int target){        int l=0;        int h=arr.length-1;        while(l<=h){            int mid=(l+h)/2;            if(arr[mid]<=target){                l=mid+1;            }            else{                h=mid-1;            }        }        return l;    }}
+704. Binary Search
+SGiven an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Â 
+
+Example 1:
+
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+Explanation: 9 exists in nums and its index is 4
+Example 2:
+
+Input: nums = [-1,0,3,5,9,12], target = 2
+Output: -1
+Explanation: 2 does not exist in nums so return -1
+
+
+class Solution {
+Â    public int search(int[] nums, int target) {
+Â        return search(nums,0,nums.length-1,target);
+Â    }
+Â    public int search(int[] nums,int s,int e,int k){
+Â        if(s<=e){
+Â            int m=s+(e-s)/2;
+Â            if(nums[m]==k)  return m;
+Â            else if(k<nums[m]){
+Â                    return search(nums,s,m-1,k);
+Â            }
+Â            else    return search(nums,m+1,e,k);
+Â        }
+Â        return -1;
+Â    }
+}
+---
+
+
+
+
+
+
+
+
+
+Implement Lower Bound
+Given a sorted array arr[] and a number target, the task is to find the lower bound of the target in this given array. The lower bound of a number is defined as the smallest index in the sorted array where the element is greater than or equal to the given number.
+
+Note: If all the elements in the given array are smaller than the target, the lower bound will be the length of the array.
+
+Examples :
+
+Input:  arr[] = [2, 3, 7, 10, 11, 11, 25], target = 9
+Output: 3
+Explanation: 3 is the smallest index in arr[] where element (arr[3] = 10) is greater than or equal to 9.
+Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 11
+Output: 4
+Explanation: 4 is the smallest index in arr[] where element (arr[4] = 11) is greater than or equal to 11.
+Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 100
+Output: 7
+Explanation: As no element in arr[] is greater than 100, return the length of array.
+class Solution {
+Â    int lower;
+Â    int lowerBound(int[] arr, int target) {
+Â        // code here
+Â        lower=arr.length;
+Â        search(arr,0,arr.length-1,target);
+Â        return lower;
+Â    }
+
+Â    public void search(int[] nums,int s,int e,int k){
+Â        if(s<=e){
+Â            int m=s+(e-s)/2;
+Â 
+Â            if(k<=nums[m]){
+Â                    lower=m;
+Â                    search(nums,s,m-1,k);
+Â            }
+Â            else{
+Â                 search(nums,m+1,e,k);
+Â            }
+Â        }
+Â    }
+}
+
+
+
+---
+Implement Upper Bound
+Given a sorted array arr[] and a number target, the task is to find the upper bound of the target in this given array.
+The upper bound of a number is defined as the smallest index in the sorted array where the element is greater than the given number.
+
+Note: If all the elements in the given array are smaller than or equal to the target, the upper bound will be the length of the array.
+
+Examples :
+
+Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 9
+Output: 3
+Explanation: 3 is the smallest index in arr[], at which element (arr[3] = 10) is larger than 9.
+Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 11
+Output: 6
+Explanation: 6 is the smallest index in arr[], at which element (arr[6] = 25) is larger than 11.
+Input: arr[] = [2, 3, 7, 10, 11, 11, 25], target = 100
+Output: 7
+Explanation: As no element in arr[] is greater than 100, return the length of array.
+
+class Solution {
+Â    int upper;
+Â    int upperBound(int[] arr, int target) {
+Â        // code here
+Â        upper=arr.length;
+Â        search(arr,0,arr.length-1,target);
+Â        return upper;
+Â    }
+
+Â    public void search(int[] nums,int s,int e,int k){
+Â        if(s<=e){
+Â            int m=s+(e-s)/2;
+Â 
+Â            if(k<nums[m]){
+Â                    upper=m;
+Â                    search(nums,s,m-1,k);
+Â            }
+Â            else{
+Â                 search(nums,m+1,e,k);
+Â            }
+Â        }
+Â    }
+}
+
+
+
+
+
+
+---
+35. Search Insert Position
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Â 
+
+Example 1:
+
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+Example 2:
+
+Input: nums = [1,3,5,6], target = 2
+Output: 1
+Example 3:
+
+Input: nums = [1,3,5,6], target = 7
+Output: 4
+
+class Solution {
+Â    public int searchInsert(int[] nums, int target) {
+Â        int low = 0;
+Â        int high = nums.length - 1;
+Â        while(low <= high) {
+Â            int mid = (low + high)/2 ;
+Â        if(nums[mid] == target) {
+Â            return mid;
+Â        }
+Â        else if (nums[mid] < target) {
+Â            low = mid + 1;
+Â        }
+Â        else {
+Â            high = mid - 1;
+Â        }
+
+Â 
+Â        }
+Â        return low;
+Â    }
+}
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------
+Floor in a Sorted Array
+Given a sorted array arr[] and an integer x, find the index (0-based) of the largest element in arr[] that is less than or equal to x. This element is called the floor of x. If such an element does not exist, return -1.
+
+Note: In case of multiple occurrences of floor of x, return the index of the last occurrence.
+
+Examples
+
+Input: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 5
+Output: 1
+Explanation: Largest number less than or equal to 5 is 2, whose index is 1.
+Input: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 11
+Output: 4
+Explanation: Largest Number less than or equal to 11 is 10, whose indices are 3 and 4. The index of last occurrence is 4.
+Input: arr[] = [1, 2, 8, 10, 10, 12, 19], x = 0
+Output: -1
+Explanation: No element less than or equal to 0 is found. So, output is -1.
+
+class Solution {
+    int lower;
+
+    public int findFloor(int[] arr, int x) {
+        lower = -1;
+        search(arr, 0, arr.length - 1, x);
+        return lower;
+    }
+
+    public void search(int[] nums, int s, int e, int k) {
+        if (s <= e) {
+            int m = s + (e - s) / 2;
+
+            if (nums[m]<= k) {
+                lower = m;          // exact match
+                search(nums, m + 1, e, k);  // search rightmost
+            }
+             else {
+                search(nums, s, m - 1, k);
+            }
+        }
+    }
+}
+
+
+
+
+
+------
+34. Find First and Last Position of Element in Sorted Array
+
+Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+Example 1:
+
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
+Example 2:
+
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
+ 
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int first = findFirst(nums, target);
+        int last = findLast(nums, target);
+        return new int[]{first, last};
+    }
+    
+    private int findFirst(int[] nums, int target) {
+        int l = 0, r = nums.length - 1, ans = -1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                ans = mid;
+                r = mid - 1; 
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return ans;
+    }
+    
+    private int findLast(int[] nums, int target) {
+        int l = 0, r = nums.length - 1, ans = -1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                ans = mid;
+                l = mid + 1;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+Number of occurrence
+
+Given a sorted array, arr[] and a number target, you need to find the number of occurrences of target in arr[]. 
+
+Examples :
+
+Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 2
+Output: 4
+Explanation: target = 2 occurs 4 times in the given array so the output is 4.
+Input: arr[] = [1, 1, 2, 2, 2, 2, 3], target = 4
+Output: 0
+Explanation: target = 4 is not present in the given array so the output is 0.
+Input: arr[] = [8, 9, 10, 12, 12, 12], target = 12
+Output: 3
+Explanation: target = 12 occurs 3 times in the given array so the output is 3
+
+class Solution {
+    int count;
+    int countFreq(int[] arr, int target) {
+        // code here
+        count=0;
+        search(arr,0,arr.length-1,target);
+        return count;
+    }
+    public void search(int[] nums,int s,int e,int k){
+        if(s<=e){
+            int m=s+(e-s)/2;
+            if(nums[m]==k){
+                count++;
+                search(nums,s,m-1,k);
+                search(nums,m+1,e,k);
+            } 
+            else if(k<nums[m]){
+                search(nums,s,m-1,k);
+            }
+            else search(nums,m+1,e,k);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+
+
+33. Search in Rotated Sorted Array
+
+There is an integer array nums sorted in ascending order (with distinct values).
+
+Prior to being passed to your function, nums is possibly left rotated at an unknown index k (1 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be left rotated by 3 indices and become [4,5,6,7,0,1,2].
+
+Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+ 
+
+Example 1:
+
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+Example 2:
+
+Input: nums = [4,5,6,7,0,1,2], target = 3
+Output: -1
+Example 3:
+
+Input: nums = [1], target = 0
+Output: -1
+ 
+
+class Solution {
+    public int search(int[] nums, int target) {
+        return binarySearch(nums, 0, nums.length - 1, target);
+    }
+
+    public int binarySearch(int[] nums, int s, int e, int k) {
+        if (s > e) return -1;
+
+        int m = s + (e - s) / 2;
+
+        if (nums[m] == k) return m;
+
+        if (nums[s] <= nums[m]) {  
+            if (k >= nums[s] && k < nums[m]) {
+                return binarySearch(nums, s, m - 1, k);
+            } else {
+                return binarySearch(nums, m + 1, e, k);
+            }
+        } 
+        else {  
+            if (k > nums[m] && k <= nums[e]) {
+                return binarySearch(nums, m + 1, e, k);
+            } else {
+                return binarySearch(nums, s, m - 1, k);
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+----------
+81. Search in Rotated Sorted Array II
+There is an integer array nums sorted in non-decreasing order (not necessarily with distinct values).
+
+Before being passed to your function, nums is rotated at an unknown pivot index k (0 <= k < nums.length) such that the resulting array is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,4,4,5,6,6,7] might be rotated at pivot index 5 and become [4,5,6,6,7,0,1,2,4,4].
+
+Given the array nums after the rotation and an integer target, return true if target is in nums, or false if it is not in nums.
+
+You must decrease the overall operation steps as much as possible.
+
+ 
+
+Example 1:
+
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+Example 2:
+
+Input: nums = [2,5,6,0,0,1,2], target = 3
+Output: false
+ 
+
+Constraints:
+
+1 <= nums.length <= 5000
+-104 <= nums[i] <= 104
+nums is guaranteed to be rotated at some pivot.
+-104 <= target <= 104
+ 
+
+Follow up: This problem is similar to Search in Rotated Sorted Array, but nums may contain duplicates. Would this affect the runtime complexity? How and why?
+class Solution {
+    public boolean search(int[] nums, int target) {
+        return search(nums,0,nums.length-1,target);
+    }
+    public boolean search(int nums[],int s,int e ,int k){
+        if(s>e) return false;
+        int m=s+(e-s)/2;
+        if(nums[m]==k)  return true;
+        if(nums[s] == nums[m] && nums[m] == nums[e]){
+            return search(nums, s + 1, e - 1, k);
+        }
+        if(nums[s]<=nums[m]){
+            if(k>=nums[s] && k<nums[m])
+                return search(nums,s,m-1,k);
+            else    return search(nums,m+1,e,k);
+        }
+        else{
+            if(k<=nums[e] && k>nums[m]){
+                return search(nums,m+1,e,k);
+            }
+            else return search(nums,s,m-1,k);
+        }
+    }
+}
+----
+
+
+
+
+
+
+
+
+153. Find Minimum in Rotated Sorted Array
+
+Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
+
+[4,5,6,7,0,1,2] if it was rotated 4 times.
+[0,1,2,4,5,6,7] if it was rotated 7 times.
+Notice that rotating an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array [a[n-1], a[0], a[1], a[2], ..., a[n-2]].
+
+Given the sorted rotated array nums of unique elements, return the minimum element of this array.
+
+You must write an algorithm that runs in O(log n) time.
+
+ 
+
+Example 1:
+
+Input: nums = [3,4,5,1,2]
+Output: 1
+Explanation: The original array was [1,2,3,4,5] rotated 3 times.
+Example 2:
+
+Input: nums = [4,5,6,7,0,1,2]
+Output: 0
+Explanation: The original array was [0,1,2,4,5,6,7] and it was rotated 4 times.
+Example 3:
+
+Input: nums = [11,13,15,17]
+Output: 11
+Explanation: The original array was [11,13,15,17] and it was rotated 4 times. 
+
+class Solution {
+    public int findMin(int[] nums) {
+        int s = 0;
+        int e = nums.length - 1;
+
+        while (s < e) {
+            int m = s + (e - s) / 2;
+
+            if (nums[m] > nums[e]) {
+                s = m + 1;
+            }
+            else if (nums[m] < nums[e]) {
+                e = m;
+            }
+            else {
+                e--;
+            }
+        }
+
+        return nums[s];
+    }
+}
+
+
+
+
+
+
+
+
+----
+Find Kth Rotation
+
+Given an increasing sorted rotated array arr[] of distinct integers. The array is right-rotated k times. Find the value of k.
+Let's suppose we have an array arr[] = [2, 4, 6, 9], if we rotate it by 2 times it will look like this:
+After 1st Rotation : [9, 2, 4, 6]
+After 2nd Rotation : [6, 9, 2, 4]
+
+Examples:
+
+Input: arr[] = [5, 1, 2, 3, 4]
+Output: 1
+Explanation: The given array is [5, 1, 2, 3, 4]. The original sorted array is [1, 2, 3, 4, 5]. We can see that the array was rotated 1 times to the right.
+Input: arr = [1, 2, 3, 4, 5]
+Output: 0
+Explanation: The given array is not rotated.
+
+class Solution {
+    int findKRotation(int arr[]) {
+        int n=arr.length;
+        return find(arr,0,n-1);
+    }
+    int find(int arr[],int s,int e){
+        if(s>e) return s;
+        int m=s+(e-s)/2;
+        if(arr[s]>arr[m] && arr[e]>arr[m])
+            return find(arr,s+1,e-1);
+        if(arr[s]<=arr[m]){
+            if(arr[e]<arr[s]){
+                return find(arr,m+1,e);
+            }
+            else 
+                return find(arr,s,m-1);
+        }
+        else
+            return find(arr,m+1,e);
+    }
+}
+
+
+
+
+
+
+
+
+----
+540. Single Element in a Sorted Array
+
+You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+
+Return the single element that appears only once.
+
+Your solution must run in O(log n) time and O(1) space.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,2,3,3,4,4,8,8]
+Output: 2
+Example 2:
+
+Input: nums = [3,3,7,7,10,11,11]
+Output: 10
+ 
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int s=0,e=nums.length-1;
+        while(s<e){
+            int m=s+(e-s)/2;
+            if(m%2==1)  m--;
+            if(nums[m]==nums[m+1])  s=m+2;
+            else e=m-1;
+        }
+        return nums[s];
+    }
+}
+
+
+
+
+
+
+
+162. Find Peak Element
+
+A peak element is an element that is strictly greater than its neighbors.
+
+Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.
+
+You may imagine that nums[-1] = nums[n] = -8. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.
+
+You must write an algorithm that runs in O(log n) time.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,1]
+Output: 2
+Explanation: 3 is a peak element and your function should return the index number 2.
+Example 2:
+
+Input: nums = [1,2,1,3,5,6,4]
+Output: 5
+Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.
+
+class Solution {
+    public int findPeakElement(int[] nums) {
+        return find(nums, 0, nums.length - 1);
+    }
+
+    public int find(int[] nums, int s, int e) {
+        if (s == e) return s; 
+
+        int m = s + (e - s) / 2;
+
+        if (nums[m] < nums[m + 1]) {
+            return find(nums, m + 1, e);
+        }
+
+        return find(nums, s, m);
+    }
+}
+
+
+
+
+
+
+	
+69. Sqrt(x)
+Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well.
+
+You must not use any built-in exponent function or operator.
+
+For example, do not use pow(x, 0.5) in c++ or x 0.5 in python.
+ 
+
+Example 1:
+
+Input: x = 4
+Output: 2
+Explanation: The square root of 4 is 2, so we return 2.
+Example 2:
+
+Input: x = 8
+Output: 2
+Explanation: The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.
+class Solution {
+    int ans;
+    public int mySqrt(int x) {
+        if(x==0 || x==1)    return x;
+        ans=0;
+        sqrt(1,x,x);
+        return ans;
+    }
+    public void  sqrt(int s,int e,int x){
+        if(s>e) return ;
+        int m=(s+e)/2;
+        if(m==x/m){
+            ans=m;
+            return;
+        }
+        if(m>x/m)    sqrt(s,m-1,x);
+        else{
+            ans=m;
+            sqrt(m+1,e,x);
+        }
+    }
+}
+
+
+
+
+
+
+
+Find nth root of m
+You are given 2 numbers n and m, the task is to find nâˆšm (nth root of m). If the root is not integer then return -1.
+
+Examples :
+
+Input: n = 3, m = 8
+Output: 2
+Explanation: 23 = 8
+Input: n = 3, m = 9
+Output: -1
+Explanation: 3rd root of 9 is not integer.
+Input: n = 4, m = 16
+Output: 2
+Explanation: 24 = 16
+
+class Solution {
+    public int nthRoot(int n, int m) {
+        if (m == 1) return 1;
+        if(m==0)    return 0;
+        int s = 1, e = m;
+        while (s <= e) {
+            int mid = s + (e - s) / 2;
+            long pow = power(mid, n, m);
+
+            if (pow == m) return mid;
+            else if (pow > m) e = mid - 1;
+            else s = mid + 1;  
+        }
+        return -1;
+    }
+
+    public long power(int base, int exp, int limit) {
+        long res = 1;
+        while (exp > 0) {
+            if (exp%2== 1) {
+                res *= base;
+                if (res > limit || exp==1) return res;
+            }
+            base *= base;
+            if (base > limit) return base;  
+            exp >>= 1;
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+875. Koko Eating Bananas
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+ 
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 5
+Output: 30
+Example 3:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23
+
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int s=1;
+        int e=0;
+        for(int pile : piles){
+            e=Math.max(e,pile);
+        }
+        if(h==piles.length) return e;
+        int result=0;
+        while(s<=e){
+            int k=(s+e)/2;
+            double count=0;
+            for(int pile : piles){
+                count+=(int)Math.ceil((double)pile/k);
+                if(count>h) break;
+            }
+            if(count<=h){
+                result=k;
+                e=k-1;
+            }
+            else {
+                s=k+1;
+            }
+
+        }
+        return result;
+    }
+    
+}
+
+
+
+
+
+ 1482. Minimum Number of Days to Make m Bouquets
+
+You are given an integer array bloomDay, an integer m and an integer k.
+
+You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.
+
+The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet.
+
+Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1.
+
+ 
+
+Example 1:
+
+Input: bloomDay = [1,10,3,10,2], m = 3, k = 1
+Output: 3
+Explanation: Let us see what happened in the first three days. x means flower bloomed and _ means flower did not bloom in the garden.
+We need 3 bouquets each should contain 1 flower.
+After day 1: [x, _, _, _, _]   // we can only make one bouquet.
+After day 2: [x, _, _, _, x]   // we can only make two bouquets.
+After day 3: [x, _, x, _, x]   // we can make 3 bouquets. The answer is 3.
+Example 2:
+
+Input: bloomDay = [1,10,3,10,2], m = 3, k = 2
+Output: -1
+Explanation: We need 3 bouquets each has 2 flowers, that means we need 6 flowers. We only have 5 flowers so it is impossible to get the needed bouquets and we return -1.
+Example 3:
+
+Input: bloomDay = [7,7,7,7,12,7,7], m = 2, k = 3
+Output: 12
+Explanation: We need 2 bouquets each should have 3 flowers.
+Here is the garden after the 7 and 12 days:
+After day 7: [x, x, x, x, _, x, x]
+We can make one bouquet of the first three flowers that bloomed. We cannot make another bouquet from the last three flowers that bloomed because they are not adjacent.
+After day 12: [x, x, x, x, x, x, x]
+It is obvious that we can make two bouquets in different ways.
+ class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int s=Integer.MAX_VALUE,e=0;
+        for(int day : bloomDay){
+            s=Math.min(s,day);
+            e=Math.max(e,day);
+        }
+        int result=-1;
+        while(s<=e){
+            int mid=s+(e-s)/2;
+            if(can(bloomDay,mid,m,k)){
+                result=mid;
+                e=mid-1;
+            }
+            else    s=mid+1;
+        }
+        return result;
+    }
+    public boolean can(int[] bloom,int mid,int m,int k){
+        int count=0;
+        int c=0;
+        for(int day : bloom){
+            if(day<=mid){
+                c++;
+                if(c==k){
+                    count++;
+                    c=0;
+                }
+            }
+            else{
+                c=0;
+            }
+        }
+        return m<=count;
+    }
+}
+
+
+
+
+
+
+
+
+
+1283. Find the Smallest Divisor Given a Threshold
+Given an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold.
+
+Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).
+
+The test cases are generated so that there will be an answer.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,5,9], threshold = 6
+Output: 5
+Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. 
+If the divisor is 4 we can get a sum of 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
+Example 2:
+
+Input: nums = [44,22,33,11,1], threshold = 5
+Output: 44
+
+
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int s=1,e=1000000; 
+        while(s<=e){
+            int mid=s+(e-s)/2;
+            if(can(nums,threshold,mid)){
+                e=mid-1;
+            }
+            else    s=mid+1;
+        }
+        return s;
+    }
+    public boolean can(int[] nums, int t,int d){
+        int sum=0;
+        for(int num : nums){
+            sum+=(num+d-1)/d;
+        }
+        return sum<=t;
+    }
+}
+
+
+
+
+
+
+
+74. Search a 2D Matrix
+You are given an m x n integer matrix matrix with the following two properties:
+
+Each row is sorted in non-decreasing order.
+The first integer of each row is greater than the last integer of the previous row.
+Given an integer target, return true if target is in matrix or false otherwise.
+
+You must write a solution in O(log(m * n)) time complexity.
+
+
+
+Example 1:
+
+
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3
+Output: true
+Example 2:
+
+
+Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13
+Output: false
+class Solution {
+Â    public boolean searchMatrix(int[][] matrix, int t) {
+Â        int m=matrix.length;
+Â        int n=matrix[0].length;
+Â        int l=0;
+Â        int h=m-1;
+Â        while(l<=h){
+Â            int mid=l+(h-l)/2;
+Â            int p=search(matrix,t,mid,n);
+Â            if(p==0){
+Â                return true;
+Â            }
+Â            else if(p==1){
+Â                l=mid+1;
+Â            }
+Â            else{
+Â                h=mid-1;
+Â            }
+Â        }
+Â        return false;
+Â    }
+Â    public static int search(int[][] m,int t,int row,int col){
+Â            if(t<m[row][0]){
+Â                return -1;
+Â            }
+Â            if(t>m[row][col-1]){
+Â                return 1;
+Â            }
+Â            int l=0;
+Â            int h=col-1;
+Â            while(l<=h){
+Â                int mid=l+(h-l)/2;
+Â                if(m[row][mid]==t){
+Â                    return 0;
+Â                }
+Â                else if(t>m[row][mid]){
+Â                    l=mid+1;
+Â                }
+Â                else{
+Â                    h=mid-1;
+Â                }
+Â            }
+Â            return -2;
+Â    }
+}
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------
+240. Search a 2D Matrix II
+Write an efficient algorithm that searches for a value target in an m x n integer matrix matrix. This matrix has the following properties:
+
+Integers in each row are sorted in ascending from left to right.
+Integers in each column are sorted in ascending from top to bottom.
+
+
+Example 1:
+
+
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 5
+Output: true
+Example 2:
+
+
+Input: matrix = [[1,4,7,11,15],[2,5,8,12,19],[3,6,9,16,22],[10,13,14,17,24],[18,21,23,26,30]], target = 20
+Output: false
+class Solution {
+Â    public boolean searchMatrix(int[][] matrix, int target) {
+Â        int m = matrix.length;
+Â        int n = matrix[0].length;
+
+Â        int i = 0, j = n - 1;
+
+Â        while( i < m && j >= 0 ) {
+Â            if ( matrix[i][j] == target) return true;
+Â            if ( matrix[i][j] > target) {
+Â                    j--;
+Â            } else {
+Â                i++;
+Â            }
+Â        }
+Â    	return false;
+Â    }
+}
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------
+1901. Find a Peak Element II
+A peak element in a 2D grid is an element that is strictly greater than all of its adjacent neighbors to the left, right, top, and bottom.
+
+Given a 0-indexed m x n matrix mat where no two adjacent cells are equal, find any peak element mat[i][j] and return the length 2 array [i,j].
+
+You may assume that the entire matrix is surrounded by an outer perimeter with the value -1 in each cell.
+
+You must write an algorithm that runs in O(m log(n)) or O(n log(m)) time.
+
+
+
+Example 1:
+
+
+
+Input: mat = [[1,4],[3,2]]
+Output: [0,1]
+Explanation: Both 3 and 4 are peak elements so [1,0] and [0,1] are both acceptable answers.
+Example 2:
+
+
+
+Input: mat = [[10,20,15],[21,30,14],[7,16,32]]
+Output: [1,1]
+Explanation: Both 30 and 32 are peak elements so [1,1] and [2,2] are both acceptable answers.
+class Solution {
+Â    public int find(int[][] mat,int row,int col){
+Â        int maxvalue=-1;
+Â        int index=-1;
+Â        for(int i=0;i<row;i++){
+Â            if(mat[i][col]>maxvalue){
+Â                maxvalue=mat[i][col];
+Â                index=i;
+Â            }
+Â        }
+Â        return index;
+Â    }
+Â    public int[]
+findPeakGrid(int[][] mat) {
+
+Â        int p = 0;
+Â        int r = mat.length;
+Â        int c = mat[0].length;
+Â        int low=0;
+Â        int high=c-1;
+Â        while(low<=high){
+Â            int mid=(low+high)/2;
+Â            int maxrowindex=find(mat,r,mid);
+Â            int left = (mid> 0) ? mat[ maxrowindex][mid-1] : Integer.MIN_VALUE;
+Â            int right = ( mid< c - 1) ? mat[ maxrowindex][mid+ 1] : Integer.MIN_VALUE;
+Â            if(mat[maxrowindex][mid] > left && mat[maxrowindex][mid] > right){
+Â                return new int[] { maxrowindex, mid };
+Â            }
+Â            else if(mat[maxrowindex][mid] <left ){
+Â                high=mid-1;
+Â            }
+Â            else
+Â                low=mid+1;
+Â        }
+Â        return new int[] { -1, -1 };
+Â    }
+}
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+Median in a row-wise sorted Matrix
+Given a row-wise sorted matrix mat[][] of size n*m, where the number of rows and columns is always odd. Return the median of the matrix.
+
+Examples:
+
+Input: mat[][] = [[1, 3, 5],
+Â                **\[2, 6, 9],**
+                \*\*\\\[3, 6, 9]]\*\*
+
+
+
+Output: 5
+Explanation: Sorting matrix elements gives us [1, 2, 3, 3, 5, 6, 6, 9, 9]. Hence, 5 is median.
+Input: mat[][] = [[2, 4, 9],
+Â                **\[3, 6, 7],**
+                \*\*\\\[4, 7, 10]]\*\*
+
+
+
+Output: 6
+Explanation: Sorting matrix elements gives us [2, 3, 4, 4, 6, 7, 7, 9, 10]. Hence, 6 is median.
+Input: mat = [[3], [4], [8]]
+Output: 4
+Explanation: Sorting matrix elements gives us [3, 4, 8]. Hence, 4 is median.
+
+// User function Template for Java
+
+class Solution {
+Â    int median(int mat[][]) {
+Â        int m=mat.length;
+Â        int n=mat[0].length;
+Â        int desired=(m*n+1)/2;
+Â        int l=Integer.MAX_VALUE;
+Â        int h=Integer.MIN_VALUE;
+Â        for(int i=0;i<m;i++){
+Â            l=Math.min(l,mat[i][0]);
+Â            h=Math.max(h,mat[i][n-1]);
+Â        }
+Â        while(l<=h){
+Â            int c=0;
+Â            int mid=l+(h-l)/2;
+Â            for(int i=0;i<m;i++){
+Â                c+=findLess(mat[i],mid);
+Â            }//we need c such that it should be just grater then the desired number
+Â                if(c<desired){
+Â                    l=mid+1;
+Â                }
+Â                else{
+Â                    h=mid-1;
+Â 
+Â            }
+Â        }
+Â        return l;
+Â    }
+Â    public int findLess(int[] arr,int target){
+Â        int l=0;
+Â        int h=arr.length-1;
+Â        while(l<=h){
+Â            int mid=(l+h)/2;
+Â            if(arr[mid]<=target){
+Â                l=mid+1;
+Â            }
+Â            else{
+Â                h=mid-1;
+Â            }
+Â        }
+Â        return l;
+Â    }
+}
+
+
+
+
+
+
+
+
+Median of Two Sorted Arrays
+
+class Solution {
+
+    public double findMedianSortedArrays(int[] a, int[] b) {
+
+        int n1 = a.length;
+        int n2 = b.length;
+
+        // Always binary search on smaller array
+        if (n1 > n2) {
+            return findMedianSortedArrays(b, a);
+        }
+
+        int low = 0;
+        int high = n1;
+
+        int left = (n1 + n2 + 1) / 2;
+        int n = n1 + n2;
+
+        while (low <= high) {
+
+            int mid1 = (low + high) / 2;
+            int mid2 = left - mid1;
+
+            int l1 = Integer.MIN_VALUE;
+            int l2 = Integer.MIN_VALUE;
+
+            int r1 = Integer.MAX_VALUE;
+            int r2 = Integer.MAX_VALUE;
+
+            // Elements just right of partition
+            if (mid1 < n1)
+                r1 = a[mid1];
+
+            if (mid2 < n2)
+                r2 = b[mid2];
+
+            // Elements just left of partition
+            if (mid1 - 1 >= 0)
+                l1 = a[mid1 - 1];
+
+            if (mid2 - 1 >= 0)
+                l2 = b[mid2 - 1];
+
+            // Correct partition
+            if (l1 <= r2 && l2 <= r1) {
+
+                // Odd length
+                if (n % 2 == 1) {
+                    return Math.max(l1, l2);
+                }
+
+                // Even length
+                return (double)(Math.max(l1, l2) + Math.min(r1, r2)) / 2.0;
+            }
+
+            // Move left
+            else if (l1 > r2) {
+                high = mid1 - 1;
+            }
+
+            // Move right
+            else {
+                low = mid1 + 1;
+            }
+        }
+
+        return 0;
+    }
+}

@@ -25,6 +25,8 @@ class CheckBit {
            k--;
         }
         return false;
+
+	//or	return n>>k &&1;
     }
 }
 

@@ -4,6 +4,7 @@ You are climbing a staircase. It takes n steps to reach the top.
 
 Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 
+
  
 
 Example 1:
@@ -35,6 +36,11 @@ class Solution {
         return climb(n,dp);
     }
 }
+
+
+
+
+
 
 
 
@@ -76,6 +82,12 @@ class Solution {
         
     }
 }
+
+
+
+
+
+
 
 
 Frogs and Jumps
@@ -127,6 +139,13 @@ class Solution {
         
     }
 }
+
+
+
+
+
+
+
 
 
 198. House Robber
@@ -224,6 +243,11 @@ class Solution {
 
 
 
+
+
+
+
+
 Geek's Training
 Geek is going for a training program for n days. He can perform any of these activities: Running, Fighting, and Learning Practice. Each activity has some point on each day. As Geek wants to improve all his skills, he can't do the same activity on two consecutive days. Given a 2D array arr[][] of size n where arr[i][0], arr[i][1], and arr[i][2] represent the merit points for Running, Fighting, and Learning on the i-th day, determine the maximum total merit points Geek can achieve .
 
@@ -253,6 +277,10 @@ class Solution {
         return ans;
     }
 }
+
+
+
+
 
 
 
@@ -425,7 +453,8 @@ class Solution {
 
 Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
 
-Note: You can only move either down or right at any point in time.
+Note: You can only move either\\\\
+down or right at any point in time.
 
  
 
@@ -586,6 +615,8 @@ class Solution {
         return dp[i][j];
     }
 }
+
+
 
 
 
@@ -1073,7 +1104,10 @@ class Solution {
         return ss(nums, nums.length, sum);
     }
 }
-
+P+N=TS
+P-N=T
+2P=TS+T
+P=(TS+T)/2
 
 
 
@@ -1178,6 +1212,13 @@ class Solution {
 }
 
 
+
+
+
+
+
+
+
 0 - 1 Knapsack Problem
 Given two arrays, val[] and wt[], where each element represents the value and weight of an item respectively, and an integer W representing the maximum capacity of the knapsack (the total weight it can hold).
 
@@ -1219,6 +1260,11 @@ class Solution {
 
 
 
+
+
+
+
+
 Rod Cutting
 Given a rod of length n inches and an array price[], where price[i] denotes the value of a piece of length i. Your task is to determine the maximum value obtainable by cutting up the rod and selling the pieces.
 
@@ -1226,7 +1272,7 @@ Note: n = size of price, and price[] is 1-indexed array.
 
 Example:
 
-Input: price[] = [1, 5, 8, 9, 10, 17, 17, 20]
+Input: price[]  =[1, 5, 8, 9, 10, 17, 17, 20]
 Output: 22
 Explanation: The maximum obtainable value is 22 by cutting in two pieces of lengths 2 and 6, i.e., 5 + 17 = 22.
 Input: price[] = [3, 5, 8, 9, 10, 17, 17, 20]
@@ -1258,13 +1304,17 @@ class Solution {
         if (dp[n][k] != -1) return dp[n][k];
 
         if (wt[n - 1] <= k) {
-            return dp[n][k] = Math.max(val[n - 1] + solve(n, k - wt[n - 1], val, wt),solve(n - 1, k, val, wt)
-            );
+            return dp[n][k] = Math.max(val[n - 1] + solve(n, k - wt[n - 1], val, wt),solve(n - 1, k, val, wt));
         }
 
         return dp[n][k] = solve(n - 1, k, val, wt);
     }
 }
+
+
+
+
+
 
 
 
@@ -1324,7 +1374,6 @@ class Solution {
 
 
 Print all LCS sequences
-Difficulty: HardAccuracy: 30.64%Submissions: 66K+Points: 8
 You are given two strings s1 and s2. Your task is to print all distinct longest common subsequences in lexicographical order.
 
 Note: A subsequence is derived from another string by deleting some or none of the elements without changing the order of the remaining elements.
@@ -1337,11 +1386,6 @@ Explanation: Length of lcs is 4, in lexicographical order they are "aaaa", "abaa
 Input: s1 = "aaa", s2 = "a"
 Output: ["a"]
 Explanation: Length of lcs is 1 and it is "a".
-
-
-
-import java.util.*;
-
 class Solution {
     int[][] dp;
     Set<String>[][] memo;
@@ -1386,7 +1430,7 @@ class Solution {
             }
         } else {
             if (dp[i - 1][j] >= dp[i][j - 1]) {
-                result.addAll(getAllLCS(s1, s2, i - 1, j));
+                result.addAll(getAllLCS(s1, s2, i -1,  j));
             }
             if (dp[i][j - 1] >= dp[i - 1][j]) {
                 result.addAll(getAllLCS(s1, s2, i, j - 1));
@@ -1397,6 +1441,11 @@ class Solution {
         return result;
     }
 }
+
+
+
+
+
 
 
 
@@ -1511,6 +1560,9 @@ class Solution {
 
 
 
+
+
+
 1312. Minimum Insertion Steps to Make a String Palindrome
 
 Given a string s. In one step you can insert any character at any index of the string.
@@ -1590,6 +1642,12 @@ class Solution {
         return n-ans(s,r,n,n);
      }
 }
+
+
+
+
+
+
 
 
 
@@ -1728,6 +1786,12 @@ class Solution {
 
 
 
+
+
+
+
+
+
 115. Distinct Subsequences
 
 Given two strings s and t, return the number of distinct subsequences of s which equals t.
@@ -1775,6 +1839,15 @@ class Solution {
         return dp[i][j]=helper(str1,str2,dp,i-1,j);
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 72. Edit Distance
@@ -2339,6 +2412,10 @@ class Solution {
 
 
 
+
+
+
+
 714. Best Time to Buy and Sell Stock with Transaction Fee
 
 You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.
@@ -2512,11 +2589,7 @@ class Solution {
 
 
 300. Longest Increasing Subsequence
-Solved
-Medium
-Topics
-premium lock icon
-Companies
+
 Given an integer array nums, return the length of the longest strictly increasing subsequence.
 
  
@@ -2919,7 +2992,6 @@ class Solution {
 
 
 Matrix Chain Multiplication
-Difficulty: HardAccuracy: 49.64%Submissions: 183K+Points: 8
 Given an array arr[] which represents the dimensions of a sequence of matrices where the ith matrix has the dimensions (arr[i-1] x arr[i]) for i>=1, find the most efficient way to multiply these matrices together. The efficient way is the one that involves the least number of multiplications.
 
 Examples:
@@ -3131,12 +3203,7 @@ class Solution {
 
 
 1106. Parsing A Boolean Expression
-Solved
-Hard
-Topics
-premium lock icon
-Companies
-Hint
+
 A boolean expression is an expression that evaluates to either true or false. It can be in one of the following shapes:
 
 't' that evaluates to true.

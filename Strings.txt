@@ -183,7 +183,7 @@ class Solution {
         for(int i=0;i<first.length();i++){
             char c = first.charAt(i);
             for(int j=1;j<strs.length;j++){
-                if(i>=strs[j].length() || strs[j].charAt(i)!=c)
+                if(i>=stnrs[j].length() || strs[j].charAt(i)!=c)
                     return first.substring(0,i);
 
             }
@@ -684,7 +684,7 @@ class Solution {
             i++;
         }
         int k=1;
-        if (i < n && s.charAt(i) == '-') {
+        if (i  < n && s.charAt(i) == '-') {
             k = -1;
             i++;
         }
@@ -1035,3 +1035,339 @@ class Solution {
     }
 }
 
+
+
+
+
+
+
+Search Pattern (KMP-algorithm)
+
+Given two strings, one is a text string txt and the other is a pattern string pat. The task is to return the indexes of all the occurrences of the pattern string in the text string. Use 0-based indexing while returning the indices.
+Note: Return an empty list in case of no occurrences of pattern.
+
+Examples:
+
+Input: txt = "geeksforgeeks", pat = "geek"
+Output: [0, 8]
+Explanation: The pattern "geek" occurs at: Index 0 (characters 0–3) and Index 8 (characters 8–11)
+Input: txt = "abesdu", pat = "edu"
+Output: []
+Explanation: There's no substring "edu" present in txt.
+Constraints:
+1 ≤ txt.size() ≤ 105
+1 ≤ pat.size() ≤ txt.size()
+Both the strings consist of lowercase English alphabets.
+
+class Solution {
+    
+    public static ArrayList<Integer> search(String text, String pattern) {
+
+        ArrayList<Integer> res = new ArrayList<>();
+
+        int n = pattern.length();
+
+        int[] lps = new int[n];
+
+        int len = 0;
+        int i = 1;
+
+        while (i < n) {
+
+            if (pattern.charAt(i) == pattern.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } 
+            else {
+
+                if (len != 0) {
+                    len = lps[len - 1];
+                } 
+                else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+
+        i = 0;
+        int j = 0;
+
+        while (i < text.length()) {
+
+            if (text.charAt(i) == pattern.charAt(j)) {
+                i++;
+                j++;
+            }
+
+            if (j == n) {
+                res.add(i - j);
+                j = lps[j - 1];
+            }
+
+            else if (i < text.length() &&
+                     text.charAt(i) != pattern.charAt(j)) {
+
+                if (j != 0) {
+                    j = lps[j - 1];
+                } 
+                else {
+                    i++;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+214. Shortest Palindrome
+You are given a string s. You can convert s to a palindrome by adding characters in front of it.
+
+Return the shortest palindrome you can find by performing this transformation.
+
+ 
+
+Example 1:
+
+Input: s = "aacecaaa"
+Output: "aaacecaaa"
+Example 2:
+
+Input: s = "abcd"
+Output: "dcbabcd"
+ class Solution {
+    public String shortestPalindrome(String s) {
+        // String rev=new StringBuilder(s).reverse().toString();
+        // String combined=s+"#"+rev;
+        // int n=combined.length();
+        // int lps[]=new int[n];
+        // int i=1,len=0;
+        // while(i<n){
+        //     if(combined.charAt(i)==combined.charAt(len)){
+        //         len++;
+        //         lps[i]=len;
+        //         i++;
+        //     }
+        //     else{
+        //         if(len!=0){
+        //             len=lps[len-1];
+        //         }
+        //         else{
+        //             lps[i]=0;
+        //             i++;
+        //         }
+        //     }
+        // }
+        // String suffix=s.substring(lps[n-1]);
+        // return new StringBuilder(suffix).reverse().toString()+s;
+        String rev = new StringBuilder(s).reverse().toString();
+
+        int n = s.length();
+
+        for (int i = 0; i < n; i++) {
+            if (s.substring(0, n - i).equals(rev.substring(i))) {
+                return r ev.substring(0, i) + s;
+            }
+        }
+
+        return rev + s;
+    }
+}
+
+
+
+
+
+
+
+
+
+1392. Longest Happy Prefix
+
+A string is called a happy prefix if is a non-empty prefix which is also a suffix (excluding itself).
+
+Given a string s, return the longest happy prefix of s. Return an empty string "" if no such prefix exists.
+
+ 
+
+Example 1:
+
+Input: s = "level"
+Output: "l"
+Explanation: s contains 4 prefix excluding itself ("l", "le", "lev", "leve"), and suffix ("l", "el", "vel", "evel"). The largest prefix which is also suffix is given by "l".
+Example 2:
+
+Input: s = "ababab"
+Output: "abab"
+Explanation: "abab" is the largest prefix which is also suffix. They can overlap in the original string.
+
+class Solution {
+    public String longestPrefix(String s) {
+        int n = s.length();
+        int[] lps = new int[n];
+
+        int len = 0; 
+        int i = 1;
+
+        while (i < n) {
+            if (s.charAt(i) == s.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1]; 
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+        return s.substring(0, lps[n - 1]);
+    }
+}
+
+
+
+
+
+647. Palindromic Substrings
+Given a string s, return the number of palindromic substrings in it.
+
+A string is a palindrome when it reads the same backward as forward.
+
+A substring is a contiguous sequence of characters within the string.
+
+ 
+
+Example 1:
+
+Input: s = "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
+Example 2:
+
+Input: s = "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
+class Solution {
+    public int countSubstrings(String s) {
+        int n = s.length();
+        int ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            // odd length palindromes
+            ans += expand(s, i, i);
+
+            // even length palindromes
+            ans += expand(s, i, i + 1);
+        }
+
+        return ans;
+    }
+
+    private int expand(String s, int left, int right) {
+        int count = 0;
+
+        while (left >= 0 && right < s.length()
+                && s.charAt(left) == s.charAt(right)) {
+
+            count++;
+            left--;
+            right++;
+        }
+
+        return count;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+
+The test cases are generated so that the length of the output will never exceed 105.
+
+ 
+
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+ 
+
+Constraints:
+
+1 <= s.length <= 30
+s consists of lowercase English letters, digits, and square brackets '[]'.
+s is guaranteed to be a valid input.
+All the integers in s are in the range [1, 300].
+class Solution {
+    public String decodeString(String s) {
+
+        Stack<Integer> countStack = new Stack<>();
+        Stack<StringBuilder> strStack = new Stack<>();
+
+        StringBuilder curr = new StringBuilder();
+        int num = 0;
+
+        for(char ch : s.toCharArray()) {
+
+            if(Character.isDigit(ch)) {
+                num = num * 10 + (ch - '0');
+            }
+            else if(ch == '[') {
+                countStack.push(num);
+                strStack.push(curr);
+
+                num = 0;
+                curr = new StringBuilder();
+            }
+            else if(ch == ']') {
+
+                int repeat = countStack.pop();
+                StringBuilder prev = strStack.pop();
+
+                for(int i = 0; i < repeat; i++) {
+                    prev.append(curr);
+                }
+
+                curr = prev;
+            }
+            else {
+                curr.append(ch);
+            }
+        }
+
+        return curr.toString();
+    }
+}
